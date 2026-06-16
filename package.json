@@ -43,6 +43,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "guardrails": "node scripts/ura-guardrails.mjs",
+    "paperclip:doctor": "npx paperclipai doctor",
+    "paperclip:run": "npx paperclipai run",
+    "paperclip:project": "npx paperclipai project list --company-id 3e75431a-4c18-498b-919c-81d067e4fbb9",
     "check": "npm run guardrails && npm run test && npm run build && npm run build-storybook"
   },
   "dependencies": {

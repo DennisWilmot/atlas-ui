@@ -9,6 +9,8 @@ npm run dev
 npm run storybook
 npm run test
 npm run guardrails
+npm run paperclip:run
+npm run paperclip:doctor
 npm run check
 ```
 
@@ -35,3 +37,7 @@ npm run check
 * examples are docs only
 * app owns context and data
 * library owns contracts and rendering behavior
+
+## Paperclip
+
+Paperclip is configured as the local task and agent board for Atlas UI. See `docs/paperclip-ura-setup.md`.
