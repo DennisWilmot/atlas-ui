@@ -1,4 +1,4 @@
-import type { Action, Metric } from "../types";
+import type { Action, HealthItem, Metric } from "../types";
 
 export function isMeaningfulMetric(
   metric: Metric,
@@ -20,4 +20,12 @@ export function hasVisibleActions(actions: Action[] = []): boolean {
 
 export function hasRows<T>(rows: T[] | null | undefined): rows is T[] {
   return Array.isArray(rows) && rows.length > 0;
+}
+
+export function getVisibleHealthItems(items: HealthItem[] = []): HealthItem[] {
+  return items.filter((item) => !item.hidden && item.label.trim().length > 0);
+}
+
+export function getAttentionHealthItems(items: HealthItem[] = []): HealthItem[] {
+  return getVisibleHealthItems(items).filter((item) => item.status === "degraded" || item.status === "pending");
 }

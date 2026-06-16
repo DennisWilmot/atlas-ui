@@ -38,6 +38,22 @@ export type Field = {
 
 export type Row = Record<string, unknown>;
 
+export type SelectItem = {
+  id: string;
+  label: string;
+  disabled?: boolean;
+};
+
+export type Filter = {
+  id: string;
+  label: string;
+  items: SelectItem[];
+  value?: string;
+  disabled?: boolean;
+  hidden?: boolean;
+  placeholder?: string;
+};
+
 export type OverlayMode = "modal" | "sheet" | "drawer";
 
 export type TableColumn<T extends Row = Row> = {
@@ -47,8 +63,13 @@ export type TableColumn<T extends Row = Row> = {
   sortable?: boolean;
 };
 
-export type SelectItem = {
+export type HealthStatus = "healthy" | "degraded" | "pending";
+
+export type HealthItem = {
   id: string;
   label: string;
-  disabled?: boolean;
+  status: HealthStatus;
+  description?: ReactNode;
+  actions?: Action[];
+  hidden?: boolean;
 };
