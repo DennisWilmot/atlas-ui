@@ -36,6 +36,7 @@ export default defineConfig({
         primitives: resolve(__dirname, "src/primitives.ts"),
         patterns: resolve(__dirname, "src/patterns.ts"),
         types: resolve(__dirname, "src/types.ts"),
+        headless: resolve(__dirname, "src/headless.ts"),
       },
       formats: ["es"],
     },

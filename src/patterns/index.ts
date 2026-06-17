@@ -9,3 +9,4 @@ export * from "./SelectView";
 export * from "./ListView";
 export * from "./SplitViewport";
 export * from "./TableView";
+export * from "./TreeView";

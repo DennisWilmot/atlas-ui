@@ -32,6 +32,10 @@
     "./types": {
       "types": "./dist/types.d.ts",
       "import": "./dist/types.js"
+    },
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "import": "./dist/headless.js"
     }
   },
   "scripts": {
