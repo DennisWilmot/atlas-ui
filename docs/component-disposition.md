@@ -47,6 +47,7 @@ Build after P0 is stable.
 
 - CommandSurface
 - FilterBar
+- Breadcrumbs
 - CollapsibleHealth
 - PredictedActionBanner
 - SplitViewport
@@ -59,12 +60,14 @@ Never export:
 - Dashboards
 - Login pages
 - Signup pages
+- Social/provider auth buttons
 - Verification pages
 - Forgot password pages
 - Settings pages
 - Informational pages
 - 404 pages
 - Email templates
+- Illustration assets
 - Marketing sections
 - CTAs
 - Testimonials
