@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220" viewBox="0 0 320 220" role="img" aria-labelledby="title description">
+  <title id="title">Neutral empty canvas illustration</title>
+  <desc id="description">Abstract panels and controls arranged on a quiet canvas.</desc>
+  <rect width="320" height="220" rx="8" fill="#f8fafc"/>
+  <rect x="44" y="36" width="232" height="148" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <rect x="68" y="62" width="86" height="10" rx="5" fill="#334155"/>
+  <rect x="68" y="84" width="148" height="8" rx="4" fill="#94a3b8"/>
+  <rect x="68" y="102" width="116" height="8" rx="4" fill="#cbd5e1"/>
+  <rect x="68" y="132" width="52" height="24" rx="6" fill="#0f766e"/>
+  <rect x="132" y="132" width="52" height="24" rx="6" fill="#e2e8f0" stroke="#94a3b8"/>
+  <path d="M222 64h22m-22 18h34m-34 18h28" stroke="#64748b" stroke-width="6" stroke-linecap="round"/>
+  <path d="M225 137l14 14 34-38" fill="none" stroke="#2563eb" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

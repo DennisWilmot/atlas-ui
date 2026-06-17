@@ -13,9 +13,11 @@ Primitives/Button
 Primitives/Input
 Primitives/Badge
 Patterns/ActionMenu
+Patterns/Breadcrumbs
 Patterns/MetricView
 Patterns/SelectView
 Patterns/ListView
+Patterns/SidebarNavigation
 Patterns/TableView
 Examples/Dashboards
 ```

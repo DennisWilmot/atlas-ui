@@ -1,4 +1,11 @@
-import type { Action, HealthItem, Metric } from "../types";
+import type { Action, HealthItem, Metric, ProgressStep, ProgressStepState } from "../types";
+
+const PROGRESS_STEP_STATES: ReadonlySet<ProgressStepState> = new Set([
+  "blocked",
+  "complete",
+  "current",
+  "upcoming",
+]);
 
 export function isMeaningfulMetric(
   metric: Metric,
@@ -28,4 +35,17 @@ export function getVisibleHealthItems(items: HealthItem[] = []): HealthItem[] {
 
 export function getAttentionHealthItems(items: HealthItem[] = []): HealthItem[] {
   return getVisibleHealthItems(items).filter((item) => item.status === "degraded" || item.status === "pending");
+}
+
+function isProgressStepState(state: string): state is ProgressStepState {
+  return PROGRESS_STEP_STATES.has(state as ProgressStepState);
+}
+
+export function getVisibleProgressSteps(steps: ProgressStep[] = []): ProgressStep[] {
+  return steps.filter((step) => (
+    !step.hidden &&
+    step.label.trim().length > 0 &&
+    typeof step.state === "string" &&
+    isProgressStepState(step.state)
+  ));
 }

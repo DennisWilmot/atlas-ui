@@ -5,7 +5,11 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
+    fileParallelism: false,
     globals: true,
+    maxWorkers: 1,
+    pool: "threads",
     setupFiles: "./vitest.setup.ts",
+    testTimeout: 20000,
   },
 });

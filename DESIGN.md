@@ -122,6 +122,16 @@ export type Field = {
 };
 
 export type Row = Record<string, unknown>;
+
+export type BreadcrumbItem = {
+  id: string;
+  label: string;
+  href?: string;
+  current?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  icon?: React.ReactNode;
+};
 ```
 
 ## Shape to view mapping
@@ -135,6 +145,7 @@ export type Row = Record<string, unknown>;
 | status         | Badge / CollapsibleHealth |
 | action list    | ActionMenu                |
 | select options | SelectView                |
+| breadcrumb     | Breadcrumbs               |
 
 ## Overflow thresholds
 

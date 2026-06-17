@@ -78,6 +78,25 @@ if (existsSync(indexPath) && /examples/.test(read(indexPath))) {
   addViolation(indexPath, "src/index.ts must not export from examples");
 }
 
+const packageJsonPath = join(repoRoot, "package.json");
+if (existsSync(packageJsonPath)) {
+  const packageJson = JSON.parse(read(packageJsonPath));
+  const scripts = packageJson.scripts ?? {};
+  const serializedScripts = {
+    build: "node scripts/verification-runner.mjs build",
+    "build-storybook": "node scripts/verification-runner.mjs build-storybook",
+    check: "node scripts/verification-runner.mjs check",
+    guardrails: "node scripts/verification-runner.mjs guardrails",
+    test: "node scripts/verification-runner.mjs test",
+  };
+
+  for (const [script, expected] of Object.entries(serializedScripts)) {
+    if (scripts[script] !== expected) {
+      addViolation(packageJsonPath, `npm run ${script} must use the serialized Atlas UI verification runner`);
+    }
+  }
+}
+
 for (const root of publicRoots) {
   const absoluteRoot = join(repoRoot, root);
   if (!existsSync(absoluteRoot)) continue;

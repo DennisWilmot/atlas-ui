@@ -36,17 +36,21 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/verification-runner.mjs build",
+    "build:raw": "tsc -b tsconfig.app.json tsconfig.node.json && vite build",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test": "vitest run",
+    "build-storybook": "node scripts/verification-runner.mjs build-storybook",
+    "build-storybook:raw": "storybook build",
+    "test": "node scripts/verification-runner.mjs test",
+    "test:raw": "vitest run --reporter dot",
     "test:watch": "vitest",
-    "guardrails": "node scripts/ura-guardrails.mjs",
+    "guardrails": "node scripts/verification-runner.mjs guardrails",
+    "guardrails:raw": "node scripts/ura-guardrails.mjs",
     "paperclip:doctor": "npx paperclipai doctor",
     "paperclip:run": "npx paperclipai run",
     "paperclip:project": "npx paperclipai project list --company-id 3e75431a-4c18-498b-919c-81d067e4fbb9",
-    "check": "npm run guardrails && npm run test && npm run build && npm run build-storybook"
+    "check": "node scripts/verification-runner.mjs check"
   },
   "dependencies": {
     "react": "^19.2.6",
