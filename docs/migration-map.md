@@ -23,7 +23,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | avatars | Avatar | REBUILD | `src/primitives/Avatar` | yes | NOT_STARTED | Squad B | pending | No legacy asset URLs. |
 | avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | NOT_STARTED | Squad B | pending | Needs overflow behavior. |
 | badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | NOT_STARTED | Squad B | pending | Needs collapse behavior. |
-| button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | NOT_STARTED | Squad B | pending | Segmented or attached buttons. |
+| button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | BUILT | Squad B | pending | Composes Button; attached/segmented variants; disabled items; optional selected (aria-pressed); injected onItemClick; hides when empty. |
 | radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
 | textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |

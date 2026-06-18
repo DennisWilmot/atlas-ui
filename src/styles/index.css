@@ -77,6 +77,55 @@ body {
   width: 1em;
 }
 
+.atlas-button-group {
+  display: inline-flex;
+}
+
+/* Attached: buttons share edges, with collapsed borders and outer radii only. */
+.atlas-button-group--attached .atlas-button-group__item {
+  border-radius: 0;
+}
+
+.atlas-button-group--attached .atlas-button-group__item:first-child {
+  border-bottom-left-radius: var(--atlas-radius-md);
+  border-top-left-radius: var(--atlas-radius-md);
+}
+
+.atlas-button-group--attached .atlas-button-group__item:last-child {
+  border-bottom-right-radius: var(--atlas-radius-md);
+  border-top-right-radius: var(--atlas-radius-md);
+}
+
+.atlas-button-group--attached .atlas-button-group__item:not(:first-child) {
+  margin-left: -1px;
+}
+
+.atlas-button-group--attached .atlas-button-group__item[data-selected="true"] {
+  border-color: var(--atlas-color-primary);
+  color: var(--atlas-color-primary);
+  position: relative;
+  z-index: 1;
+}
+
+/* Segmented: a padded track with a raised selected segment. */
+.atlas-button-group--segmented {
+  background: var(--atlas-color-surface);
+  border: 1px solid var(--atlas-color-border);
+  border-radius: var(--atlas-radius-md);
+  gap: var(--atlas-space-1);
+  padding: var(--atlas-space-1);
+}
+
+.atlas-button-group--segmented .atlas-button-group__item {
+  border-radius: var(--atlas-radius-sm);
+}
+
+.atlas-button-group--segmented .atlas-button-group__item[data-selected="true"] {
+  background: var(--atlas-color-bg);
+  box-shadow: 0 1px 2px rgba(16, 42, 67, 0.12);
+  color: var(--atlas-color-text);
+}
+
 .atlas-field {
   display: grid;
   gap: var(--atlas-space-2);
