@@ -5,11 +5,50 @@ const meta = {
   title: "Primitives/Divider",
   component: Divider,
   tags: ["autodocs"],
+  args: {
+    orientation: "horizontal",
+    label: "OR",
+    labelPosition: "center",
+    spacing: "md",
+    decorative: false,
+    hidden: false,
+  },
+  argTypes: {
+    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    label: { control: "text" },
+    labelPosition: { control: "inline-radio", options: ["start", "center", "end"] },
+    spacing: { control: "select", options: ["none", "sm", "md", "lg"] },
+    decorative: { control: "boolean" },
+    hidden: { control: "boolean" },
+  },
+  parameters: {
+    controls: { include: ["orientation", "label", "labelPosition", "spacing", "decorative", "hidden"] },
+  },
 } satisfies Meta<typeof Divider>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+// Interactive: drive every prop from the Controls panel.
+export const Playground: Story = {
+  render: (args) => {
+    const vertical = args.orientation === "vertical";
+    return (
+      <div
+        style={
+          vertical
+            ? { display: "flex", alignItems: "center", height: "3rem" }
+            : { width: "20rem" }
+        }
+      >
+        {vertical ? <span>Left</span> : null}
+        <Divider {...args} />
+        {vertical ? <span>Right</span> : null}
+      </div>
+    );
+  },
+};
 
 export const Horizontal: Story = {
   render: () => (

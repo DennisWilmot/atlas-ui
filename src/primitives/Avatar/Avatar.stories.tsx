@@ -15,6 +15,19 @@ const meta = {
   args: {
     alt: "Record A",
     initials: "RA",
+    size: "md",
+    showPlaceholder: false,
+  },
+  argTypes: {
+    src: { control: "text" },
+    alt: { control: "text" },
+    initials: { control: "text" },
+    size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
+    status: { control: "select", options: [undefined, "online", "offline", "busy", "away"] },
+    showPlaceholder: { control: "boolean" },
+  },
+  parameters: {
+    controls: { include: ["src", "alt", "initials", "size", "status", "showPlaceholder"] },
   },
 } satisfies Meta<typeof Avatar>;
 

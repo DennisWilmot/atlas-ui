@@ -22,12 +22,31 @@ const meta = {
   tags: ["autodocs"],
   args: {
     items: items.slice(0, 3),
+    maxVisible: 5,
+    size: "md",
+  },
+  argTypes: {
+    items: { control: "object" },
+    maxVisible: { control: { type: "number", min: 0 } },
+    size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
+    ringColor: { control: "color" },
+  },
+  parameters: {
+    controls: { include: ["items", "maxVisible", "size", "ringColor"] },
   },
 } satisfies Meta<typeof AvatarGroup>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+// Interactive: drive every prop from the Controls panel.
+export const Playground: Story = {
+  args: {
+    items,
+    maxVisible: 5,
+  },
+};
 
 // URA Law 4: with no items the group renders nothing.
 export const EmptyHidden: Story = {

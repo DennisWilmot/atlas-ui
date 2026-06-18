@@ -18,6 +18,13 @@ const meta = {
   args: {
     items: items.slice(0, 4),
   },
+  argTypes: {
+    items: { control: "object" },
+    maxVisible: { control: { type: "number", min: 0 } },
+  },
+  parameters: {
+    controls: { include: ["items", "maxVisible"] },
+  },
 } satisfies Meta<typeof BadgeGroup>;
 
 export default meta;
