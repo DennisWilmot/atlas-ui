@@ -265,12 +265,12 @@ body {
   position: relative;
 }
 
-/* Each avatar carries its own background and border so the avatar on top
-   cleanly masks the one beneath, making the overlap read on any background. */
+/* Each avatar carries its own background and a border matching the page
+   background, so the avatar on top reads as cut out from the one beneath. */
 .atlas-avatar-group .atlas-avatar,
 .atlas-avatar-group__overflow {
   background: var(--atlas-color-surface);
-  border: 2px solid var(--atlas-color-border);
+  border: 2px solid var(--atlas-color-bg);
 }
 
 /* Overlap each avatar onto the previous by ~30% of its diameter, per size. */
