@@ -35,4 +35,12 @@ describe("BadgeGroup", () => {
     expect(screen.getByText("Label 5")).toBeInTheDocument();
     expect(screen.queryByText(/^\+/)).not.toBeInTheDocument();
   });
+
+  it("wraps the overflow indicator in a tooltip, only when there is overflow", () => {
+    const { container, rerender } = render(<BadgeGroup items={items} maxVisible={2} />);
+    expect(container.querySelector(".atlas-tooltip")).toBeInTheDocument();
+
+    rerender(<BadgeGroup items={items} />);
+    expect(container.querySelector(".atlas-tooltip")).not.toBeInTheDocument();
+  });
 });

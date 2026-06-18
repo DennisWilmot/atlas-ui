@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { Badge, type BadgeVariant } from "../Badge";
+import { Tooltip } from "../Tooltip";
 
 export type BadgeGroupItem = {
   id: string;
@@ -25,7 +26,8 @@ export function BadgeGroup({ items, maxVisible, className, ...props }: BadgeGrou
   // URA Law 4: nothing meaningful renders when there are no visible badges.
   if (!visible.length) return null;
 
-  const overflowCount = items.length - visible.length;
+  const hidden = items.slice(limit);
+  const overflowCount = hidden.length;
 
   return (
     <span className={joinClasses("atlas-badge-group", className)} {...props}>
@@ -35,9 +37,21 @@ export function BadgeGroup({ items, maxVisible, className, ...props }: BadgeGrou
         </Badge>
       ))}
       {overflowCount > 0 ? (
-        <Badge className="atlas-badge-group__overflow" aria-label={`${overflowCount} more`}>
-          +{overflowCount}
-        </Badge>
+        // Surface the hidden labels on hover/focus — data the app already
+        // supplied, revealed without navigation (URA: save time, no fetch).
+        <Tooltip
+          content={
+            <span className="atlas-badge-group__overflow-list">
+              {hidden.map((item) => (
+                <span key={item.id}>{item.label}</span>
+              ))}
+            </span>
+          }
+        >
+          <Badge className="atlas-badge-group__overflow" aria-label={`${overflowCount} more`}>
+            +{overflowCount}
+          </Badge>
+        </Tooltip>
       ) : null}
     </span>
   );

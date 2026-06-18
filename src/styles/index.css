@@ -289,21 +289,25 @@ body {
 
 .atlas-tag--info {
   background: #f0f9ff;
+  border-color: #bae6fd;
   color: var(--atlas-color-info);
 }
 
 .atlas-tag--success {
   background: #ecfdf3;
+  border-color: #bbf7d0;
   color: var(--atlas-color-success);
 }
 
 .atlas-tag--warning {
   background: #fffbeb;
+  border-color: #fde68a;
   color: var(--atlas-color-warning);
 }
 
 .atlas-tag--danger {
   background: #fef2f2;
+  border-color: #fecaca;
   color: var(--atlas-color-danger);
 }
 
@@ -494,6 +498,12 @@ body {
   display: inline-flex;
   flex-wrap: wrap;
   gap: var(--atlas-space-2);
+}
+
+.atlas-badge-group__overflow-list {
+  display: grid;
+  gap: var(--atlas-space-1);
+  text-align: left;
 }
 
 .atlas-avatar-group {
