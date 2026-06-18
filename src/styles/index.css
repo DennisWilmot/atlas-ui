@@ -255,6 +255,92 @@ body {
   background: var(--atlas-color-warning);
 }
 
+.atlas-divider {
+  border: 0;
+  color: var(--atlas-color-muted);
+}
+
+.atlas-divider--horizontal {
+  border-top: 1px solid var(--atlas-color-border);
+  width: 100%;
+}
+
+.atlas-divider--vertical {
+  align-self: stretch;
+  border-left: 1px solid var(--atlas-color-border);
+  display: inline-block;
+  min-height: 1em;
+  width: 0;
+}
+
+.atlas-divider--horizontal.atlas-divider--spacing-sm {
+  margin-block: var(--atlas-space-2);
+}
+
+.atlas-divider--horizontal.atlas-divider--spacing-md {
+  margin-block: var(--atlas-space-4);
+}
+
+.atlas-divider--horizontal.atlas-divider--spacing-lg {
+  margin-block: var(--atlas-space-6);
+}
+
+.atlas-divider--vertical.atlas-divider--spacing-sm {
+  margin-inline: var(--atlas-space-2);
+}
+
+.atlas-divider--vertical.atlas-divider--spacing-md {
+  margin-inline: var(--atlas-space-4);
+}
+
+.atlas-divider--vertical.atlas-divider--spacing-lg {
+  margin-inline: var(--atlas-space-6);
+}
+
+/* Labeled dividers draw their lines via pseudo-elements so the lines stay out
+   of the accessibility tree; only the label text is real content. */
+.atlas-divider--has-label {
+  align-items: center;
+  border-top: 0;
+  display: flex;
+  gap: var(--atlas-space-3);
+  width: 100%;
+}
+
+.atlas-divider--has-label::before,
+.atlas-divider--has-label::after {
+  border-top: 1px solid var(--atlas-color-border);
+  content: "";
+}
+
+.atlas-divider--label-center::before,
+.atlas-divider--label-center::after {
+  flex: 1;
+}
+
+.atlas-divider--label-start::before {
+  flex: 0 0 var(--atlas-space-4);
+}
+
+.atlas-divider--label-start::after {
+  flex: 1;
+}
+
+.atlas-divider--label-end::before {
+  flex: 1;
+}
+
+.atlas-divider--label-end::after {
+  flex: 0 0 var(--atlas-space-4);
+}
+
+.atlas-divider__label {
+  color: var(--atlas-color-muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .atlas-badge-group {
   align-items: center;
   display: inline-flex;

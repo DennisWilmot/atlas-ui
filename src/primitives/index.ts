@@ -3,6 +3,7 @@ export * from "./Input";
 export * from "./Badge";
 export * from "./BadgeGroup";
 export * from "./Checkbox";
+export * from "./Divider";
 export * from "./Toggle";
 export * from "./DropdownMenu";
 export * from "./Overlay";

@@ -32,7 +32,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | tags | Tag | REBUILD | `src/primitives/Tag` | yes | NOT_STARTED | Squad B | pending | Removable and disabled variants. |
 | sliders | Slider | REBUILD | `src/primitives/Slider` | yes | NOT_STARTED | Squad B | pending | Range with min, max, and step. |
 | featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | NOT_STARTED | Squad B | pending | Decorative only. |
-| dividers | Divider | REBUILD | `src/primitives/Divider` | yes | NOT_STARTED | Squad B | pending | Low-risk separator primitive. |
+| dividers | Divider | REBUILD | `src/primitives/Divider` | yes | BUILT | Squad B | pending | Horizontal/vertical; optional label + position; spacing; decorative vs semantic separator; hides when hidden. |
 | carousels | Carousel | REBUILD | `src/primitives/Carousel` | yes | BUILT | Squad B | main | Slides supplied by props. |
 | color-pickers | ColorPicker | REBUILD | `src/primitives/ColorPicker` | yes | BUILT | Squad B | main | Color value and optional swatches supplied by props. |
 | rating-badge-and-stars | Rating | REBUILD | `src/primitives/Rating` | yes | BUILT | Squad B | main | Value supplied by props. |
