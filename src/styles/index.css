@@ -357,6 +357,63 @@ body {
   color: var(--atlas-color-danger);
 }
 
+.atlas-select__native {
+  appearance: auto;
+}
+
+.atlas-select__combobox {
+  position: relative;
+}
+
+.atlas-select__input {
+  width: 100%;
+}
+
+.atlas-select__listbox {
+  background: var(--atlas-color-bg);
+  border: 1px solid var(--atlas-color-border);
+  border-radius: var(--atlas-radius-md);
+  box-shadow: 0 4px 12px rgba(16, 42, 67, 0.12);
+  left: 0;
+  list-style: none;
+  margin: var(--atlas-space-1) 0 0;
+  max-height: 14rem;
+  overflow-y: auto;
+  padding: var(--atlas-space-1);
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 10;
+}
+
+.atlas-select__option {
+  border-radius: var(--atlas-radius-sm);
+  color: var(--atlas-color-text);
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: var(--atlas-space-2) var(--atlas-space-3);
+}
+
+.atlas-select__option--active {
+  background: var(--atlas-color-surface);
+}
+
+.atlas-select__option[aria-selected="true"] {
+  color: var(--atlas-color-primary);
+  font-weight: 600;
+}
+
+.atlas-select__option--disabled {
+  color: var(--atlas-color-muted);
+  cursor: not-allowed;
+}
+
+.atlas-select__empty {
+  color: var(--atlas-color-muted);
+  font-size: 0.875rem;
+  padding: var(--atlas-space-2) var(--atlas-space-3);
+}
+
 .atlas-badge {
   align-items: center;
   border-radius: var(--atlas-radius-full);
