@@ -44,6 +44,7 @@ For each component:
    - REFACTOR
    - REFERENCE_ONLY
    - EXAMPLE_ONLY
+   - MERGED
 
 2. Create or update the destination file.
 

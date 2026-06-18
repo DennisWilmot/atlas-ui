@@ -12,6 +12,7 @@ Do not copy legacy components directly into public exports.
 | REFACTOR | Keep interaction/visual intent; replace contract and URA behavior |
 | REFERENCE_ONLY | Inspiration only; not exported |
 | EXAMPLE_ONLY | Storybook/docs/examples only; never npm export |
+| MERGED | Accounted for by another public primitive or pattern; never separate npm export |
 
 ## Base primitives
 
