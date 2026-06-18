@@ -262,31 +262,30 @@ body {
 
 .atlas-avatar-group__item {
   border-radius: var(--atlas-radius-full);
-  /* Hairline edge defines each circle; white ring is the cutout gap so
-     overlapping avatars stay distinct even with pale fallback fills. */
-  box-shadow: 0 0 0 1px var(--atlas-color-border), 0 0 0 3px var(--atlas-color-bg);
+  /* White cutout ring so each avatar reads as stacked on top of the previous. */
+  box-shadow: 0 0 0 3px var(--atlas-color-bg);
   display: inline-flex;
 }
 
-/* Overlap each avatar onto the previous by ~40% of its diameter, per size. */
+/* Overlap each avatar onto the previous by ~30% of its diameter, per size. */
 .atlas-avatar-group--xs .atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -0.625rem;
+  margin-left: -0.5rem;
 }
 
 .atlas-avatar-group--sm .atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -0.75rem;
+  margin-left: -0.625rem;
 }
 
 .atlas-avatar-group--md .atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -1rem;
+  margin-left: -0.75rem;
 }
 
 .atlas-avatar-group--lg .atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -1.125rem;
+  margin-left: -1rem;
 }
 
 .atlas-avatar-group--xl .atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -1.5rem;
+  margin-left: -1.25rem;
 }
 
 .atlas-avatar-group__overflow {
