@@ -133,6 +133,15 @@ body {
   }
 }
 
+/* Respect reduced-motion: drop the sliding animation and show a static full
+   bar so the indeterminate state still reads as busy, not as partial progress. */
+@media (prefers-reduced-motion: reduce) {
+  .atlas-progress[data-indeterminate="true"] .atlas-progress__bar {
+    animation: none;
+    width: 100%;
+  }
+}
+
 .atlas-field {
   display: grid;
   gap: var(--atlas-space-2);

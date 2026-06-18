@@ -25,9 +25,15 @@ const meta = {
       control: "boolean",
       description: "Keep the label for assistive tech but hide it visually.",
     },
+    valueText: {
+      control: "text",
+      description: 'Human-friendly text announced for the value (e.g. "60%"), via aria-valuetext.',
+    },
   },
   parameters: {
-    controls: { include: ["value", "min", "max", "indeterminate", "label", "hideLabel"] },
+    controls: {
+      include: ["value", "min", "max", "indeterminate", "label", "hideLabel", "valueText"],
+    },
   },
   decorators: [
     (Story) => (
@@ -56,4 +62,8 @@ export const Labeled: Story = {
 
 export const VisuallyHiddenLabel: Story = {
   args: { value: 40, label: "Uploading", hideLabel: true },
+};
+
+export const WithValueText: Story = {
+  args: { value: 60, label: "Uploading", valueText: "60%" },
 };

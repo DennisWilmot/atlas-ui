@@ -7,6 +7,12 @@ export type ProgressIndicatorProps = Omit<HTMLAttributes<HTMLDivElement>, "child
   indeterminate?: boolean;
   label?: ReactNode;
   hideLabel?: boolean;
+  /**
+   * Human-friendly text announced for the current value, e.g. "60%" or
+   * "3 of 10 files". Applied as `aria-valuetext` in determinate mode. The app
+   * supplies it because only the app knows the right wording/units.
+   */
+  valueText?: string;
 };
 
 function joinClasses(...classes: Array<string | false | undefined>): string {
@@ -28,6 +34,7 @@ export function ProgressIndicator({
   indeterminate = false,
   label,
   hideLabel = false,
+  valueText,
   className,
   ...props
 }: ProgressIndicatorProps) {
@@ -44,6 +51,7 @@ export function ProgressIndicator({
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={indeterminate ? undefined : clamped}
+      aria-valuetext={indeterminate ? undefined : valueText}
       aria-labelledby={hasLabel ? labelId : undefined}
       data-indeterminate={indeterminate ? "true" : undefined}
       {...props}

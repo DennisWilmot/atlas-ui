@@ -24,6 +24,18 @@ describe("ProgressIndicator", () => {
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "100");
   });
 
+  it("applies valueText as aria-valuetext in determinate mode", () => {
+    render(<ProgressIndicator value={60} valueText="60%" />);
+
+    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuetext", "60%");
+  });
+
+  it("omits aria-valuetext when indeterminate", () => {
+    render(<ProgressIndicator indeterminate valueText="busy" />);
+
+    expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-valuetext");
+  });
+
   it("omits aria-valuenow and flags itself when indeterminate", () => {
     render(<ProgressIndicator indeterminate />);
     const bar = screen.getByRole("progressbar");
