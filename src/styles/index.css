@@ -268,8 +268,25 @@ body {
   display: inline-flex;
 }
 
-.atlas-avatar-group__item + .atlas-avatar-group__item {
-  margin-left: -0.5rem;
+/* Overlap each avatar onto the previous by ~40% of its diameter, per size. */
+.atlas-avatar-group--xs .atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -0.625rem;
+}
+
+.atlas-avatar-group--sm .atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -0.75rem;
+}
+
+.atlas-avatar-group--md .atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -1rem;
+}
+
+.atlas-avatar-group--lg .atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -1.125rem;
+}
+
+.atlas-avatar-group--xl .atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -1.5rem;
 }
 
 .atlas-avatar-group__overflow {

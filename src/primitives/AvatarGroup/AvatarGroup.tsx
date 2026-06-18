@@ -33,7 +33,7 @@ export function AvatarGroup({
   const overflowCount = items.length - visible.length;
 
   return (
-    <span className={joinClasses("atlas-avatar-group", className)} {...props}>
+    <span className={joinClasses("atlas-avatar-group", `atlas-avatar-group--${size}`, className)} {...props}>
       {visible.map((item) => (
         <span key={item.id} className="atlas-avatar-group__item">
           <Avatar size={size} src={item.imageSrc} initials={item.initials} alt={item.label} />
