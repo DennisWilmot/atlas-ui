@@ -48,3 +48,18 @@ export const Overflow: Story = {
     maxVisible: 5,
   },
 };
+
+// Match the cut-out ring to the surface the group sits on.
+export const CustomRingColor: Story = {
+  args: {
+    items: items.slice(0, 5),
+    ringColor: "#eef2f7",
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ background: "#eef2f7", padding: "1.5rem", borderRadius: "0.5rem" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};

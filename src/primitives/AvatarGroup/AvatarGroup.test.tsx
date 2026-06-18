@@ -34,4 +34,13 @@ describe("AvatarGroup", () => {
 
     expect(screen.getByText("+3")).toBeInTheDocument();
   });
+
+  it("applies ringColor as a CSS variable on the group", () => {
+    const { container } = render(
+      <AvatarGroup items={items.slice(0, 3)} ringColor="rgb(1, 2, 3)" />,
+    );
+    const group = container.querySelector(".atlas-avatar-group") as HTMLElement;
+
+    expect(group.style.getPropertyValue("--atlas-avatar-group-ring")).toBe("rgb(1, 2, 3)");
+  });
 });

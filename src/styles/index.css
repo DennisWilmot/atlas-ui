@@ -265,12 +265,13 @@ body {
   position: relative;
 }
 
-/* Each avatar carries its own background and a border matching the page
-   background, so the avatar on top reads as cut out from the one beneath. */
+/* Each avatar carries its own background and a cut-out ring border so the
+   avatar on top reads as separated from the one beneath. The ring color is
+   overridable per instance via the ringColor prop; defaults to page bg. */
 .atlas-avatar-group .atlas-avatar,
 .atlas-avatar-group__overflow {
   background: var(--atlas-color-surface);
-  border: 2px solid var(--atlas-color-bg);
+  border: 2px solid var(--atlas-avatar-group-ring, var(--atlas-color-bg));
 }
 
 /* Overlap each avatar onto the previous by ~30% of its diameter, per size. */
