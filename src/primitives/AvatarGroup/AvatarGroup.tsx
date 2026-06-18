@@ -34,13 +34,14 @@ export function AvatarGroup({
 
   return (
     <span className={joinClasses("atlas-avatar-group", `atlas-avatar-group--${size}`, className)} {...props}>
-      {visible.map((item) => (
-        <span key={item.id} className="atlas-avatar-group__item">
+      {visible.map((item, index) => (
+        // Each next avatar sits above the previous one.
+        <span key={item.id} className="atlas-avatar-group__item" style={{ zIndex: index + 1 }}>
           <Avatar size={size} src={item.imageSrc} initials={item.initials} alt={item.label} />
         </span>
       ))}
       {overflowCount > 0 ? (
-        <span className="atlas-avatar-group__item">
+        <span className="atlas-avatar-group__item" style={{ zIndex: visible.length + 1 }}>
           <span
             className={joinClasses("atlas-avatar-group__overflow", `atlas-avatar--${size}`)}
             role="img"

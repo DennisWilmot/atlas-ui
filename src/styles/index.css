@@ -261,11 +261,16 @@ body {
 }
 
 .atlas-avatar-group__item {
-  border-radius: var(--atlas-radius-full);
-  /* White cutout gap separates stacked avatars; a thin outer edge keeps the
-     ring visible against any background (white ring alone vanishes on white). */
-  box-shadow: 0 0 0 2px var(--atlas-color-bg), 0 0 0 3px var(--atlas-color-border);
   display: inline-flex;
+  position: relative;
+}
+
+/* Each avatar carries its own background and border so the avatar on top
+   cleanly masks the one beneath, making the overlap read on any background. */
+.atlas-avatar-group .atlas-avatar,
+.atlas-avatar-group__overflow {
+  background: var(--atlas-color-surface);
+  border: 2px solid var(--atlas-color-border);
 }
 
 /* Overlap each avatar onto the previous by ~30% of its diameter, per size. */
