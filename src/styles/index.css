@@ -77,6 +77,62 @@ body {
   width: 1em;
 }
 
+.atlas-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.atlas-progress {
+  display: grid;
+  gap: var(--atlas-space-2);
+}
+
+.atlas-progress__label {
+  color: var(--atlas-color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.atlas-progress__track {
+  background: var(--atlas-color-surface);
+  border-radius: var(--atlas-radius-full);
+  display: block;
+  height: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.atlas-progress__bar {
+  background: var(--atlas-color-primary);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+  transition: width 200ms ease;
+}
+
+.atlas-progress[data-indeterminate="true"] .atlas-progress__bar {
+  animation: atlas-progress-indeterminate 1.2s ease-in-out infinite;
+  width: 40%;
+}
+
+@keyframes atlas-progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
+
 .atlas-field {
   display: grid;
   gap: var(--atlas-space-2);
