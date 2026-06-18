@@ -169,29 +169,41 @@ function SelectNative({
   }
 
   return (
-    <select
-      id={controlId}
-      className="atlas-field__control atlas-select__native"
-      value={value ?? ""}
-      onChange={handleChange}
-      disabled={disabled}
-      required={required}
-      name={name}
-      aria-describedby={describedBy}
-      aria-invalid={invalid}
-      aria-label={ariaLabel}
-    >
-      {placeholder ? (
-        <option value="" disabled hidden>
-          {placeholder}
-        </option>
-      ) : null}
-      {items.map((item) => (
-        <option key={item.id} value={item.value} disabled={item.disabled}>
-          {item.label}
-        </option>
-      ))}
-    </select>
+    <div className="atlas-select__field">
+      <select
+        id={controlId}
+        className="atlas-field__control atlas-select__native"
+        value={value ?? ""}
+        onChange={handleChange}
+        disabled={disabled}
+        required={required}
+        name={name}
+        aria-describedby={describedBy}
+        aria-invalid={invalid}
+        aria-label={ariaLabel}
+      >
+        {placeholder ? (
+          <option value="" disabled hidden>
+            {placeholder}
+          </option>
+        ) : null}
+        {items.map((item) => (
+          <option key={item.id} value={item.value} disabled={item.disabled}>
+            {item.label}
+          </option>
+        ))}
+      </select>
+      <svg
+        className="atlas-select__chevron"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+      >
+        <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </div>
   );
 }
 

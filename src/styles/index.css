@@ -357,8 +357,15 @@ body {
   color: var(--atlas-color-danger);
 }
 
+.atlas-select__field {
+  position: relative;
+}
+
 .atlas-select__native {
-  appearance: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2rem;
+  width: 100%;
 }
 
 .atlas-select__combobox {
