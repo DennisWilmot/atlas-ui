@@ -40,4 +40,26 @@ describe("ButtonGroup", () => {
     expect(screen.getByRole("button", { name: "Month" })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "Day" })).toHaveAttribute("aria-pressed", "false");
   });
+
+  it("uses radio semantics in single selection mode", () => {
+    render(<ButtonGroup items={items} selectionMode="single" selectedId="day" aria-label="View" />);
+
+    expect(screen.getByRole("radiogroup", { name: "View" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Day" })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("radio", { name: "Month" })).toHaveAttribute("aria-checked", "false");
+  });
+
+  it("moves selection with arrow keys, skipping disabled items, in single mode", () => {
+    const onItemClick = vi.fn();
+    render(
+      <ButtonGroup items={items} selectionMode="single" selectedId="day" onItemClick={onItemClick} />,
+    );
+
+    const day = screen.getByRole("radio", { name: "Day" });
+    day.focus();
+    fireEvent.keyDown(day, { key: "ArrowRight" });
+
+    // "Week" is disabled, so focus/selection skips to "Month".
+    expect(onItemClick).toHaveBeenCalledWith("month");
+  });
 });

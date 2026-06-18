@@ -16,6 +16,8 @@ const meta = {
     items,
     variant: "attached",
     size: "md",
+    selectionMode: "toggle",
+    "aria-label": "View range",
   },
   argTypes: {
     items: { control: "object", description: "Items/actions rendered as buttons." },
@@ -24,12 +26,22 @@ const meta = {
       options: ["attached", "segmented"],
       description: "attached: joined buttons. segmented: track with a raised selected segment.",
     },
-    selectedId: { control: "text", description: "Optional selected item id (toggles aria-pressed)." },
+    selectedId: { control: "text", description: "Optional selected item id." },
     size: { control: "select", options: ["sm", "md", "lg"] },
+    selectionMode: {
+      control: "inline-radio",
+      options: ["toggle", "single"],
+      description:
+        "toggle (default): toolbar of toggle buttons (role=group, aria-pressed). single: radio group (role=radiogroup, aria-checked) with arrow-key roving focus.",
+    },
+    "aria-label": {
+      control: "text",
+      description: "Accessible name for the group — recommended so screen readers can announce its purpose.",
+    },
     onItemClick: { control: false, description: "Called with the clicked item's id. Disabled items do not fire." },
   },
   parameters: {
-    controls: { include: ["items", "variant", "selectedId", "size"] },
+    controls: { include: ["items", "variant", "selectedId", "size", "selectionMode", "aria-label"] },
   },
 } satisfies Meta<typeof ButtonGroup>;
 
@@ -76,6 +88,24 @@ export const AttachedSelected: Story = {
     return (
       <ButtonGroup
         variant="attached"
+        items={items}
+        selectedId={selected}
+        onItemClick={setSelected}
+      />
+    );
+  },
+};
+
+// Opt into the single-select radio pattern: role=radiogroup, aria-checked,
+// arrow-key roving focus. Use for "pick one of N" selectors.
+export const SingleSelect: Story = {
+  render: function SingleSelectStory() {
+    const [selected, setSelected] = useState("week");
+    return (
+      <ButtonGroup
+        variant="segmented"
+        selectionMode="single"
+        aria-label="View range"
         items={items}
         selectedId={selected}
         onItemClick={setSelected}

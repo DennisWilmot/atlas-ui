@@ -1,7 +1,9 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { useRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { Button, type ButtonSize } from "../Button";
 
 export type ButtonGroupVariant = "attached" | "segmented";
+
+export type ButtonGroupSelectionMode = "toggle" | "single";
 
 export type ButtonGroupItem = {
   id: string;
@@ -16,6 +18,16 @@ export type ButtonGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> 
   selectedId?: string;
   size?: ButtonSize;
   onItemClick?: (id: string) => void;
+  /**
+   * Accessibility pattern.
+   * - "toggle" (default): a toolbar of toggle buttons — `role="group"`,
+   *   `aria-pressed` per item. Tab moves between buttons. Leave as-is for
+   *   action clusters or multi-state groups.
+   * - "single": a single-select radio group — `role="radiogroup"`,
+   *   `role="radio"` + `aria-checked` per item, with arrow-key roving focus.
+   *   Use when the group picks exactly one of N.
+   */
+  selectionMode?: ButtonGroupSelectionMode;
 };
 
 function joinClasses(...classes: Array<string | false | undefined>): string {
@@ -28,21 +40,60 @@ export function ButtonGroup({
   selectedId,
   size = "md",
   onItemClick,
+  selectionMode = "toggle",
   className,
   ...props
 }: ButtonGroupProps) {
+  const groupRef = useRef<HTMLDivElement>(null);
+
   // URA Law 4: no items, nothing meaningful to show, render nothing.
   if (!items.length) return null;
 
+  const single = selectionMode === "single";
   const selectable = selectedId !== undefined;
+  const firstEnabledIndex = items.findIndex((item) => !item.disabled);
+
+  // Roving tabindex for the radio pattern: only the selected (or, with no
+  // selection, the first enabled) item is in the tab order; arrows do the rest.
+  function tabIndexFor(item: ButtonGroupItem, index: number): number | undefined {
+    if (!single) return undefined;
+    if (selectable) return item.id === selectedId ? 0 : -1;
+    return index === firstEnabledIndex ? 0 : -1;
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    const forward = event.key === "ArrowRight" || event.key === "ArrowDown";
+    const backward = event.key === "ArrowLeft" || event.key === "ArrowUp";
+    if (!forward && !backward) return;
+
+    const buttons = groupRef.current?.querySelectorAll<HTMLButtonElement>(".atlas-button-group__item");
+    if (!buttons || !buttons.length) return;
+
+    event.preventDefault();
+    const current = Array.from(buttons).indexOf(document.activeElement as HTMLButtonElement);
+    const direction = forward ? 1 : -1;
+    const count = items.length;
+
+    let next = current < 0 ? (forward ? -1 : 0) : current;
+    for (let step = 0; step < count; step += 1) {
+      next = (next + direction + count) % count;
+      if (!items[next].disabled) break;
+    }
+    if (items[next].disabled) return; // every item disabled
+
+    buttons[next]?.focus();
+    onItemClick?.(items[next].id);
+  }
 
   return (
     <div
+      ref={groupRef}
       className={joinClasses("atlas-button-group", `atlas-button-group--${variant}`, className)}
-      role="group"
+      role={single ? "radiogroup" : "group"}
+      onKeyDown={single ? handleKeyDown : undefined}
       {...props}
     >
-      {items.map((item) => {
+      {items.map((item, index) => {
         const selected = selectable && item.id === selectedId;
 
         return (
@@ -54,7 +105,10 @@ export function ButtonGroup({
             className="atlas-button-group__item"
             disabled={item.disabled}
             leftIcon={item.icon}
-            aria-pressed={selectable ? selected : undefined}
+            role={single ? "radio" : undefined}
+            aria-pressed={!single && selectable ? selected : undefined}
+            aria-checked={single ? selected : undefined}
+            tabIndex={tabIndexFor(item, index)}
             data-selected={selected ? "true" : undefined}
             onClick={() => onItemClick?.(item.id)}
           >
