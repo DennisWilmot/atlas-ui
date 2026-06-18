@@ -21,11 +21,15 @@ const meta = {
     "aria-label": "View range",
   },
   argTypes: {
-    items: { control: "object", description: "Items/actions rendered as buttons." },
+    items: {
+      control: "object",
+      description: "Items/actions rendered as buttons.",
+    },
     variant: {
       control: "inline-radio",
       options: ["attached", "segmented"],
-      description: "attached: joined buttons. segmented: track with a raised selected segment.",
+      description:
+        "attached: joined buttons. segmented: track with a raised selected segment.",
     },
     selectedId: { control: "text", description: "Optional selected item id." },
     size: { control: "select", options: ["sm", "md", "lg"] },
@@ -37,12 +41,26 @@ const meta = {
     },
     "aria-label": {
       control: "text",
-      description: "Accessible name for the group — recommended so screen readers can announce its purpose.",
+      description:
+        "Accessible name for the group recommended so screen readers can announce its purpose.",
     },
-    onItemClick: { control: false, description: "Called with the clicked item's id. Disabled items do not fire." },
+    onItemClick: {
+      control: false,
+      description:
+        "Called with the clicked item's id. Disabled items do not fire.",
+    },
   },
   parameters: {
-    controls: { include: ["items", "variant", "selectedId", "size", "selectionMode", "aria-label"] },
+    controls: {
+      include: [
+        "items",
+        "variant",
+        "selectedId",
+        "size",
+        "selectionMode",
+        "aria-label",
+      ],
+    },
   },
 } satisfies Meta<typeof ButtonGroup>;
 
