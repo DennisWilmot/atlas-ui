@@ -56,7 +56,8 @@ export function Select({
   const baseId = id ?? generatedId;
   const controlId = `${baseId}-control`;
   const labelId = label ? `${baseId}-label` : undefined;
-  const hintId = hint ? `${baseId}-hint` : undefined;
+  // The error replaces the hint: only describe/show the hint when there is no error.
+  const hintId = hint && !error ? `${baseId}-hint` : undefined;
   const errorId = error ? `${baseId}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
@@ -83,6 +84,11 @@ export function Select({
       {label ? (
         <label className="atlas-field__label" id={labelId} htmlFor={controlId}>
           {label}
+          {required ? (
+            <span className="atlas-field__required" aria-hidden="true">
+              {" *"}
+            </span>
+          ) : null}
         </label>
       ) : null}
 
@@ -117,7 +123,7 @@ export function Select({
         />
       )}
 
-      {hint ? (
+      {hint && !error ? (
         <span className="atlas-field__hint" id={hintId}>
           {hint}
         </span>
@@ -299,6 +305,16 @@ function SelectCombobox({
         onBlur={() => setOpen(false)}
         onKeyDown={handleKeyDown}
       />
+      <svg
+        className="atlas-select__chevron"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        aria-hidden="true"
+      >
+        <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
       {open && !disabled ? (
         <ul role="listbox" id={listboxId} className="atlas-select__listbox" aria-label={ariaLabel}>
           {filtered.length ? (

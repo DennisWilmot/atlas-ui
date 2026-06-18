@@ -43,6 +43,14 @@ describe("Select", () => {
     expect(control).toHaveAccessibleDescription(/Selection required/);
   });
 
+  it("replaces the hint with the error when both are provided", () => {
+    render(<Select items={fewItems} label="Choose one" hint="Pick the best fit" error="Selection required" />);
+
+    expect(screen.queryByText("Pick the best fit")).not.toBeInTheDocument();
+    expect(screen.getByText("Selection required")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveAccessibleDescription("Selection required");
+  });
+
   it("fires a value change when an item is selected", () => {
     const onValueChange = vi.fn();
     render(<Select items={fewItems} label="Choose one" onValueChange={onValueChange} />);

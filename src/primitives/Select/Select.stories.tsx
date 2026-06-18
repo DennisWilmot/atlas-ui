@@ -65,7 +65,8 @@ export const WithHint: Story = {
 };
 
 export const Error: Story = {
-  args: { error: "Selection required" },
+  // The hint is supplied too, but the error replaces it while present.
+  args: { error: "Selection required", hint: "Pick the best fit" },
 };
 
 // URA Law 4: with no items the select renders nothing.

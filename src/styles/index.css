@@ -366,7 +366,24 @@ body {
 }
 
 .atlas-select__input {
+  padding-right: 2rem;
   width: 100%;
+}
+
+.atlas-select__chevron {
+  color: var(--atlas-color-muted);
+  height: 1rem;
+  pointer-events: none;
+  position: absolute;
+  right: var(--atlas-space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 160ms ease;
+  width: 1rem;
+}
+
+.atlas-select__combobox:has(.atlas-select__input[aria-expanded="true"]) .atlas-select__chevron {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .atlas-select__listbox {
