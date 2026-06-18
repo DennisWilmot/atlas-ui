@@ -6,6 +6,7 @@ export * from "./Checkbox";
 export * from "./Divider";
 export * from "./Toggle";
 export * from "./DropdownMenu";
+export * from "./FeaturedIcon";
 export * from "./Overlay";
 export * from "./Modal";
 export * from "./Tabs";
