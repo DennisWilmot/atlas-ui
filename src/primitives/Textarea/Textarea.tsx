@@ -88,27 +88,32 @@ export function Textarea({
         aria-invalid={Boolean(error)}
         {...props}
       />
-      {showHint ? (
-        <span className="atlas-field__hint" id={hintId}>
-          {hint}
-        </span>
-      ) : null}
-      {error ? (
-        <span className="atlas-field__error" id={errorId}>
-          {error}
-        </span>
-      ) : null}
-      {showCount ? (
-        <span
-          className={joinClasses(
-            "atlas-field__hint",
-            "atlas-textarea__count",
-            atLimit && "atlas-textarea__count--limit",
-          )}
-          id={countId}
-        >
-          {maxLength != null ? `${currentLength} / ${maxLength}` : currentLength}
-        </span>
+      {showHint || error || showCount ? (
+        <div className="atlas-textarea__footer">
+          <span className="atlas-textarea__message">
+            {error ? (
+              <span className="atlas-field__error" id={errorId}>
+                {error}
+              </span>
+            ) : showHint ? (
+              <span className="atlas-field__hint" id={hintId}>
+                {hint}
+              </span>
+            ) : null}
+          </span>
+          {showCount ? (
+            <span
+              className={joinClasses(
+                "atlas-field__hint",
+                "atlas-textarea__count",
+                atLimit && "atlas-textarea__count--limit",
+              )}
+              id={countId}
+            >
+              {maxLength != null ? `${currentLength} / ${maxLength}` : currentLength}
+            </span>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

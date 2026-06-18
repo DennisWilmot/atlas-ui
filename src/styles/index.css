@@ -132,9 +132,21 @@ body {
   resize: none;
 }
 
+.atlas-textarea__footer {
+  align-items: flex-start;
+  display: flex;
+  gap: var(--atlas-space-3);
+  justify-content: space-between;
+}
+
+.atlas-textarea__message {
+  min-width: 0;
+}
+
 .atlas-textarea__count {
   color: var(--atlas-color-muted);
-  justify-self: end;
+  flex: none;
+  white-space: nowrap;
 }
 
 .atlas-textarea__count--limit {
