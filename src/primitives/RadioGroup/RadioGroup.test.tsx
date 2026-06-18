@@ -60,10 +60,20 @@ describe("RadioGroup", () => {
     expect(onValueChange).not.toHaveBeenCalled();
   });
 
-  it("renders the horizontal orientation", () => {
+  it("renders the horizontal orientation and exposes aria-orientation", () => {
     const { container } = render(<RadioGroup items={items} label="Choose one" orientation="horizontal" />);
 
     expect(container.querySelector(".atlas-radio-group--horizontal")).toBeInTheDocument();
+    expect(screen.getByRole("radiogroup", { name: "Choose one" })).toHaveAttribute(
+      "aria-orientation",
+      "horizontal",
+    );
+  });
+
+  it("exposes aria-disabled when the group is disabled", () => {
+    render(<RadioGroup items={items} label="Choose one" disabled />);
+
+    expect(screen.getByRole("radiogroup", { name: "Choose one" })).toHaveAttribute("aria-disabled", "true");
   });
 
   it("renders the card variant", () => {

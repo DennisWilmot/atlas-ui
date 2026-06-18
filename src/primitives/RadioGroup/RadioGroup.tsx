@@ -58,6 +58,8 @@ export function RadioGroup({
       role="radiogroup"
       aria-labelledby={label ? labelId : undefined}
       aria-required={required || undefined}
+      aria-orientation={orientation}
+      aria-disabled={disabled || undefined}
       {...props}
     >
       {label ? (
