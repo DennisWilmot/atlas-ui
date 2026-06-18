@@ -20,15 +20,35 @@ const meta = {
     tone: "neutral",
   },
   argTypes: {
-    children: { control: "text" },
-    size: { control: "select", options: ["sm", "md", "lg"] },
-    tone: { control: "select", options: ["neutral", "info", "success", "warning", "danger"] },
-    icon: { control: false },
-    avatar: { control: false },
-    onRemove: { control: false },
+    children: {
+      control: "text",
+      description: "Label / content. The tag renders nothing when empty.",
+    },
+    size: {
+      control: "select",
+      options: ["sm", "md", "lg"],
+      description: "Tag size.",
+      table: { defaultValue: { summary: "md" } },
+    },
+    tone: {
+      control: "select",
+      options: ["neutral", "info", "success", "warning", "danger"],
+      description: "Color tint: neutral | info | success | warning | danger.",
+      table: { defaultValue: { summary: "neutral" } },
+    },
+    icon: { control: false, description: "Optional leading icon node." },
+    avatar: { control: false, description: "Optional leading avatar node." },
+    onRemove: {
+      control: false,
+      description: "When provided, renders a remove (×) button that calls this handler.",
+    },
+    removeLabel: {
+      control: "text",
+      description: 'Accessible label for the remove button (default "Remove").',
+    },
   },
   parameters: {
-    controls: { include: ["children", "size", "tone"] },
+    controls: { include: ["children", "size", "tone", "removeLabel"] },
   },
 } satisfies Meta<typeof Tag>;
 

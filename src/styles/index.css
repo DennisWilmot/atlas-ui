@@ -257,7 +257,8 @@ body {
 
 .atlas-tag {
   align-items: center;
-  border-radius: var(--atlas-radius-full);
+  border: 1px solid transparent;
+  border-radius: var(--atlas-radius-md);
   display: inline-flex;
   font-weight: 600;
   gap: var(--atlas-space-1);
@@ -282,6 +283,7 @@ body {
 
 .atlas-tag--neutral {
   background: var(--atlas-color-surface);
+  border-color: var(--atlas-color-border);
   color: var(--atlas-color-text);
 }
 
