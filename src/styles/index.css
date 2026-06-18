@@ -262,8 +262,9 @@ body {
 
 .atlas-avatar-group__item {
   border-radius: var(--atlas-radius-full);
-  /* White cutout ring so each avatar reads as stacked on top of the previous. */
-  box-shadow: 0 0 0 3px var(--atlas-color-bg);
+  /* White cutout gap separates stacked avatars; a thin outer edge keeps the
+     ring visible against any background (white ring alone vanishes on white). */
+  box-shadow: 0 0 0 2px var(--atlas-color-bg), 0 0 0 3px var(--atlas-color-border);
   display: inline-flex;
 }
 
