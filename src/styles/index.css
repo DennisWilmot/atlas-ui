@@ -170,6 +170,28 @@ body {
   border-color: var(--atlas-color-primary);
 }
 
+.atlas-radio-group {
+  display: grid;
+  gap: var(--atlas-space-2);
+}
+
+.atlas-radio-group__label {
+  color: var(--atlas-color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.atlas-radio-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--atlas-space-2);
+}
+
+.atlas-radio-group--horizontal .atlas-radio-group__options {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .atlas-textarea {
   min-height: 4rem;
   padding: var(--atlas-space-2) var(--atlas-space-3);
