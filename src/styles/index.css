@@ -357,17 +357,6 @@ body {
   color: var(--atlas-color-danger);
 }
 
-.atlas-select__field {
-  position: relative;
-}
-
-.atlas-select__native {
-  appearance: none;
-  -webkit-appearance: none;
-  padding-right: 2rem;
-  width: 100%;
-}
-
 .atlas-select__combobox {
   position: relative;
 }
@@ -377,15 +366,8 @@ body {
   width: 100%;
 }
 
-.atlas-select__chevron {
-  color: var(--atlas-color-muted);
-  height: 1rem;
-  pointer-events: none;
-  position: absolute;
-  right: var(--atlas-space-3);
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;
+.atlas-select__input[readonly] {
+  cursor: pointer;
 }
 
 .atlas-select__toggle {

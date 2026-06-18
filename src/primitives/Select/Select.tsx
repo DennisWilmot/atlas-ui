@@ -2,8 +2,8 @@ import { useId, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 import type { SelectItem as CanonicalOption } from "../../types";
 
-// Reuse the canonical SelectOption ({ id, label, disabled? }) and add the value
-// the form control submits.
+// Reuse the canonical SelectItem ({ id, label, disabled? }) and add the value
+// the form control resolves to.
 export type SelectOption = CanonicalOption & {
   value: string;
 };
@@ -19,7 +19,6 @@ export type SelectProps = {
   error?: string;
   disabled?: boolean;
   required?: boolean;
-  name?: string;
   id?: string;
   className?: string;
   /** Optional message shown when a search yields no matches (no default copy). */
@@ -27,8 +26,8 @@ export type SelectProps = {
   "aria-label"?: string;
 };
 
-// URA Rule 12 / DESIGN.md overflow threshold: at most this many options use a
-// standard select; more upgrade to a searchable combobox automatically.
+// URA Rule 12 / DESIGN.md overflow threshold: at most this many options render a
+// plain (non-searchable) dropdown; more enable type-to-filter automatically.
 const OVERFLOW_THRESHOLD = 10;
 
 function joinClasses(...classes: Array<string | false | undefined>): string {
@@ -46,7 +45,6 @@ export function Select({
   error,
   disabled = false,
   required = false,
-  name,
   id,
   className,
   noResultsLabel,
@@ -92,36 +90,21 @@ export function Select({
         </label>
       ) : null}
 
-      {searchable ? (
-        <SelectCombobox
-          items={items}
-          value={currentValue}
-          onSelect={handleSelect}
-          controlId={controlId}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          describedBy={describedBy}
-          invalid={Boolean(error)}
-          ariaLabel={label ? undefined : ariaLabel}
-          labelledBy={labelId}
-          noResultsLabel={noResultsLabel}
-        />
-      ) : (
-        <SelectNative
-          items={items}
-          value={currentValue}
-          onSelect={handleSelect}
-          controlId={controlId}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          name={name}
-          describedBy={describedBy}
-          invalid={Boolean(error)}
-          ariaLabel={label ? undefined : ariaLabel}
-        />
-      )}
+      <SelectListbox
+        items={items}
+        value={currentValue}
+        onSelect={handleSelect}
+        controlId={controlId}
+        placeholder={placeholder}
+        disabled={disabled}
+        required={required}
+        describedBy={describedBy}
+        invalid={Boolean(error)}
+        ariaLabel={label ? undefined : ariaLabel}
+        labelledBy={labelId}
+        noResultsLabel={noResultsLabel}
+        searchable={searchable}
+      />
 
       {hint && !error ? (
         <span className="atlas-field__hint" id={hintId}>
@@ -137,77 +120,7 @@ export function Select({
   );
 }
 
-type NativeProps = {
-  items: SelectOption[];
-  value: string | undefined;
-  onSelect: (value: string) => void;
-  controlId: string;
-  placeholder?: string;
-  disabled: boolean;
-  required: boolean;
-  name?: string;
-  describedBy?: string;
-  invalid: boolean;
-  ariaLabel?: string;
-};
-
-function SelectNative({
-  items,
-  value,
-  onSelect,
-  controlId,
-  placeholder,
-  disabled,
-  required,
-  name,
-  describedBy,
-  invalid,
-  ariaLabel,
-}: NativeProps) {
-  function handleChange(event: ChangeEvent<HTMLSelectElement>) {
-    onSelect(event.target.value);
-  }
-
-  return (
-    <div className="atlas-select__field">
-      <select
-        id={controlId}
-        className="atlas-field__control atlas-select__native"
-        value={value ?? ""}
-        onChange={handleChange}
-        disabled={disabled}
-        required={required}
-        name={name}
-        aria-describedby={describedBy}
-        aria-invalid={invalid}
-        aria-label={ariaLabel}
-      >
-        {placeholder ? (
-          <option value="" disabled hidden>
-            {placeholder}
-          </option>
-        ) : null}
-        {items.map((item) => (
-          <option key={item.id} value={item.value} disabled={item.disabled}>
-            {item.label}
-          </option>
-        ))}
-      </select>
-      <svg
-        className="atlas-select__chevron"
-        viewBox="0 0 16 16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        aria-hidden="true"
-      >
-        <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </div>
-  );
-}
-
-type ComboboxProps = {
+type ListboxProps = {
   items: SelectOption[];
   value: string | undefined;
   onSelect: (value: string) => void;
@@ -220,9 +133,10 @@ type ComboboxProps = {
   ariaLabel?: string;
   labelledBy?: string;
   noResultsLabel?: string;
+  searchable: boolean;
 };
 
-function SelectCombobox({
+function SelectListbox({
   items,
   value,
   onSelect,
@@ -235,7 +149,8 @@ function SelectCombobox({
   ariaLabel,
   labelledBy,
   noResultsLabel,
-}: ComboboxProps) {
+  searchable,
+}: ListboxProps) {
   const listboxId = `${controlId}-listbox`;
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -243,8 +158,15 @@ function SelectCombobox({
 
   const selectedItem = items.find((item) => item.value === value);
   const needle = query.trim().toLowerCase();
-  const filtered = needle ? items.filter((item) => item.label.toLowerCase().includes(needle)) : items;
-  const displayValue = open ? query : selectedItem?.label ?? "";
+  const filtered = searchable && needle ? items.filter((item) => item.label.toLowerCase().includes(needle)) : items;
+  const displayValue = searchable && open ? query : selectedItem?.label ?? "";
+
+  function openList() {
+    if (disabled) return;
+    setOpen(true);
+    const selectedIndex = filtered.findIndex((item) => item.value === value);
+    setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }
 
   function commitSelect(item: SelectOption) {
     if (item.disabled) return;
@@ -267,12 +189,8 @@ function SelectCombobox({
     if (disabled) return;
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      if (!open) {
-        setOpen(true);
-        setActiveIndex(0);
-      } else {
-        moveActive(1);
-      }
+      if (!open) openList();
+      else moveActive(1);
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
       if (open) moveActive(-1);
@@ -280,10 +198,16 @@ function SelectCombobox({
       if (open && filtered[activeIndex]) {
         event.preventDefault();
         commitSelect(filtered[activeIndex]);
+      } else if (!open) {
+        event.preventDefault();
+        openList();
       }
     } else if (event.key === "Escape") {
       setOpen(false);
       setQuery("");
+    } else if (event.key === " " && !searchable) {
+      event.preventDefault();
+      if (!open) openList();
     }
   }
 
@@ -297,23 +221,24 @@ function SelectCombobox({
         value={displayValue}
         placeholder={placeholder}
         disabled={disabled}
-        required={required}
+        readOnly={!searchable}
         autoComplete="off"
         aria-expanded={open}
         aria-controls={listboxId}
-        aria-autocomplete="list"
+        aria-autocomplete={searchable ? "list" : undefined}
+        aria-required={required || undefined}
         aria-activedescendant={open && filtered[activeIndex] ? `${listboxId}-opt-${activeIndex}` : undefined}
         aria-describedby={describedBy}
         aria-invalid={invalid}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabel ? undefined : labelledBy}
-        onChange={(event) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          if (!searchable) return;
           setQuery(event.target.value);
           setOpen(true);
           setActiveIndex(0);
         }}
-        onFocus={() => setOpen(true)}
-        onClick={() => setOpen(true)}
+        onClick={() => openList()}
         onBlur={() => setOpen(false)}
         onKeyDown={handleKeyDown}
       />
@@ -324,7 +249,7 @@ function SelectCombobox({
         className="atlas-select__toggle"
         disabled={disabled}
         onMouseDown={(event) => event.preventDefault()}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={() => (open ? setOpen(false) : openList())}
       >
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
           <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />

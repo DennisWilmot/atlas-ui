@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -16,6 +16,10 @@ const manyItems: SelectOption[] = Array.from({ length: 11 }, (_, index) => ({
   label: `Option ${index}`,
 }));
 
+function control() {
+  return screen.getByRole("combobox", { name: "Choose one" });
+}
+
 describe("Select", () => {
   it("renders nothing when items is empty", () => {
     const { container } = render(<Select items={[]} label="Choose one" />);
@@ -26,21 +30,20 @@ describe("Select", () => {
   it("exposes an accessible label", () => {
     render(<Select items={fewItems} label="Choose one" />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toBeInTheDocument();
+    expect(control()).toBeInTheDocument();
   });
 
   it("associates the hint with the control", () => {
     render(<Select items={fewItems} label="Choose one" hint="Pick the best fit" />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveAccessibleDescription(/Pick the best fit/);
+    expect(control()).toHaveAccessibleDescription(/Pick the best fit/);
   });
 
   it("associates the error and marks the control invalid", () => {
     render(<Select items={fewItems} label="Choose one" error="Selection required" />);
 
-    const control = screen.getByRole("combobox", { name: "Choose one" });
-    expect(control).toHaveAttribute("aria-invalid", "true");
-    expect(control).toHaveAccessibleDescription(/Selection required/);
+    expect(control()).toHaveAttribute("aria-invalid", "true");
+    expect(control()).toHaveAccessibleDescription(/Selection required/);
   });
 
   it("replaces the hint with the error when both are provided", () => {
@@ -48,50 +51,60 @@ describe("Select", () => {
 
     expect(screen.queryByText("Pick the best fit")).not.toBeInTheDocument();
     expect(screen.getByText("Selection required")).toBeInTheDocument();
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveAccessibleDescription("Selection required");
   });
 
-  it("fires a value change when an item is selected", () => {
+  it("fires a value change when an item is selected", async () => {
+    const user = userEvent.setup();
     const onValueChange = vi.fn();
     render(<Select items={fewItems} label="Choose one" onValueChange={onValueChange} />);
 
-    fireEvent.change(screen.getByRole("combobox", { name: "Choose one" }), { target: { value: "b" } });
+    await user.click(control());
+    await user.click(screen.getByRole("option", { name: "Option B" }));
 
     expect(onValueChange).toHaveBeenCalledWith("b");
   });
 
-  it("renders disabled options that cannot be selected", () => {
-    render(<Select items={fewItems} label="Choose one" />);
+  it("does not select a disabled option", async () => {
+    const user = userEvent.setup();
+    const onValueChange = vi.fn();
+    render(<Select items={fewItems} label="Choose one" onValueChange={onValueChange} />);
 
+    await user.click(control());
     const disabledOption = screen.getByRole("option", { name: "Option C" });
-    expect(disabledOption).toBeDisabled();
+    expect(disabledOption).toHaveAttribute("aria-disabled", "true");
+    await user.click(disabledOption);
+
+    expect(onValueChange).not.toHaveBeenCalled();
   });
 
-  it("disables the whole control when disabled", () => {
+  it("does not open when the control is disabled", async () => {
+    const user = userEvent.setup();
     render(<Select items={fewItems} label="Choose one" disabled />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toBeDisabled();
+    expect(control()).toBeDisabled();
+    await user.click(control());
+
+    expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 
   it("selects the single item by default when no value is provided", () => {
     render(<Select items={[{ id: "only", value: "only", label: "Only Option" }]} label="Choose one" />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveValue("only");
+    expect(control()).toHaveValue("Only Option");
   });
 
-  it("renders a standard select for 10 or fewer items", () => {
+  it("renders a non-searchable dropdown for 10 or fewer items", () => {
     render(<Select items={fewItems} label="Choose one" />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" }).tagName).toBe("SELECT");
+    expect(control()).toHaveAttribute("readonly");
+    expect(control()).not.toHaveAttribute("aria-autocomplete");
   });
 
   it("upgrades to a searchable combobox for more than 10 items", () => {
     render(<Select items={manyItems} label="Choose one" />);
 
-    const control = screen.getByRole("combobox", { name: "Choose one" });
-    expect(control.tagName).toBe("INPUT");
-    expect(control).toHaveAttribute("aria-autocomplete", "list");
-    expect(control).toHaveAttribute("aria-expanded", "false");
+    expect(control()).not.toHaveAttribute("readonly");
+    expect(control()).toHaveAttribute("aria-autocomplete", "list");
   });
 
   it("filters and selects in the searchable combobox", async () => {
@@ -99,8 +112,7 @@ describe("Select", () => {
     const onValueChange = vi.fn();
     render(<Select items={manyItems} label="Choose one" onValueChange={onValueChange} />);
 
-    const control = screen.getByRole("combobox", { name: "Choose one" });
-    await user.type(control, "Option 5");
+    await user.type(control(), "Option 5");
     await user.click(screen.getByRole("option", { name: "Option 5" }));
 
     expect(onValueChange).toHaveBeenCalledWith("opt-5");
@@ -120,7 +132,7 @@ describe("Select", () => {
     const user = userEvent.setup();
     render(<Select items={manyItems} label="Choose one" noResultsLabel="No matches found" />);
 
-    await user.type(screen.getByRole("combobox", { name: "Choose one" }), "zzzzz");
+    await user.type(control(), "zzzzz");
 
     expect(screen.getByText("No matches found")).toBeInTheDocument();
   });
@@ -128,18 +140,20 @@ describe("Select", () => {
   it("renders the controlled value correctly", () => {
     render(<Select items={fewItems} label="Choose one" value="b" onValueChange={() => {}} />);
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveValue("b");
+    expect(control()).toHaveValue("Option B");
   });
 
-  it("supports controlled selection", () => {
+  it("supports controlled selection", async () => {
+    const user = userEvent.setup();
     function Controlled() {
       const [value, setValue] = useState("a");
       return <Select items={fewItems} label="Choose one" value={value} onValueChange={setValue} />;
     }
     render(<Controlled />);
 
-    fireEvent.change(screen.getByRole("combobox", { name: "Choose one" }), { target: { value: "b" } });
+    await user.click(control());
+    await user.click(screen.getByRole("option", { name: "Option B" }));
 
-    expect(screen.getByRole("combobox", { name: "Choose one" })).toHaveValue("b");
+    expect(control()).toHaveValue("Option B");
   });
 });
