@@ -15,6 +15,12 @@ describe("FeaturedIcon", () => {
     expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
   });
 
+  it("renders nothing when no icon is provided", () => {
+    const { container } = render(<FeaturedIcon />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it("applies size and tone modifier classes", () => {
     const { container } = render(
       <FeaturedIcon icon={<svg data-testid="icon" />} size="lg" tone="success" />,

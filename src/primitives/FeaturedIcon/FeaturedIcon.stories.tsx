@@ -69,3 +69,10 @@ export const WithCustomIcon: Story = {
     tone: "success",
   },
 };
+
+// URA Law 4: with no icon the wrapper renders nothing.
+export const EmptyHidden: Story = {
+  args: {
+    icon: undefined,
+  },
+};

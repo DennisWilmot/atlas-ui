@@ -5,7 +5,7 @@ export type FeaturedIconSize = "sm" | "md" | "lg" | "xl";
 export type FeaturedIconTone = "neutral" | "info" | "success" | "warning" | "danger";
 
 export type FeaturedIconProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
-  icon: ReactNode;
+  icon?: ReactNode;
   size?: FeaturedIconSize;
   tone?: FeaturedIconTone;
 };
@@ -21,6 +21,9 @@ export function FeaturedIcon({
   className,
   ...props
 }: FeaturedIconProps) {
+  // URA Law 4: no icon, nothing meaningful to show, render nothing.
+  if (icon == null || icon === "" || icon === false) return null;
+
   return (
     <span
       className={joinClasses(
