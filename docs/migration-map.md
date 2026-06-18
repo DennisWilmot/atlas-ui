@@ -24,7 +24,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | NOT_STARTED | Squad B | pending | Needs overflow behavior. |
 | badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | NOT_STARTED | Squad B | pending | Needs collapse behavior. |
 | button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | NOT_STARTED | Squad B | pending | Segmented or attached buttons. |
-| radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
+| radios | Radio | REBUILD | `src/primitives/Radio` | yes | BUILT | Squad B | pending | Native radio; controlled/uncontrolled; label or aria-label; optional description; default/card variants; name/required/disabled. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
 | textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | BUILT | Squad B | pending | Controlled/uncontrolled; label or aria-label; hint/error (a11y-associated); disabled/required; autoResize; maxLength; optional character count. |
 | progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | NOT_STARTED | Squad B | pending | Determinate and indeterminate. |

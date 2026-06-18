@@ -3,6 +3,7 @@ export * from "./Input";
 export * from "./Textarea";
 export * from "./Badge";
 export * from "./Checkbox";
+export * from "./Radio";
 export * from "./Toggle";
 export * from "./DropdownMenu";
 export * from "./Overlay";
