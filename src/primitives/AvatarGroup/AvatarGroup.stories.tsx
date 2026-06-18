@@ -49,6 +49,18 @@ export const Overflow: Story = {
   },
 };
 
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "flex-start" }}>
+      <AvatarGroup items={items} maxVisible={4} size="xs" />
+      <AvatarGroup items={items} maxVisible={4} size="sm" />
+      <AvatarGroup items={items} maxVisible={4} size="md" />
+      <AvatarGroup items={items} maxVisible={4} size="lg" />
+      <AvatarGroup items={items} maxVisible={4} size="xl" />
+    </div>
+  ),
+};
+
 // Match the cut-out ring to the surface the group sits on.
 export const CustomRingColor: Story = {
   args: {
