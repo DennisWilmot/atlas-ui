@@ -262,7 +262,9 @@ body {
 
 .atlas-avatar-group__item {
   border-radius: var(--atlas-radius-full);
-  box-shadow: 0 0 0 2px var(--atlas-color-bg);
+  /* Hairline edge defines each circle; white ring is the cutout gap so
+     overlapping avatars stay distinct even with pale fallback fills. */
+  box-shadow: 0 0 0 1px var(--atlas-color-border), 0 0 0 3px var(--atlas-color-bg);
   display: inline-flex;
 }
 
