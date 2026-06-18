@@ -17,11 +17,11 @@ export type ButtonGroupProps = Omit<
   onItemClick?: (id: string) => void;
   /**
    * Accessibility pattern.
-   * - "toggle" (default): a toolbar of toggle buttons — `role="group"`,
-   *   `aria-pressed` per item. Tab moves between buttons. Leave as-is for
+   * - "toggle" (default): a toolbar of toggle buttons (`role="group"`,
+   *   `aria-pressed` per item). Tab moves between buttons. Leave as-is for
    *   action clusters or multi-state groups.
-   * - "single": a single-select radio group — `role="radiogroup"`,
-   *   `role="radio"` + `aria-checked` per item, with arrow-key roving focus.
+   * - "single": a single-select radio group (`role="radiogroup"`,
+   *   `role="radio"` + `aria-checked` per item) with arrow-key roving focus.
    *   Use when the group picks exactly one of N.
    */
   selectionMode?: ButtonGroupSelectionMode;
@@ -34,13 +34,13 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
 /**
  * A small cluster of related buttons (attached or segmented).
  *
- * Intended for a small, fixed set of items — segmented controls, view
+ * Intended for a small, fixed set of items: segmented controls, view
  * switchers, or a few related actions. It deliberately has no overflow
  * handling: pass a handful of items, not dozens. For large or unbounded
  * option sets, use a select/list pattern instead.
  *
  * Items use the canonical `Action` type, but `Action.intent` is intentionally
- * not applied every item shares the group's `variant` so a segmented control
+ * not applied. Every item shares the group's `variant` so a segmented control
  * reads as a single unit. Use `selectedId` to emphasize the active item rather
  * than per-item intent.
  */

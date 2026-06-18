@@ -42,7 +42,7 @@ const meta = {
     "aria-label": {
       control: "text",
       description:
-        "Accessible name for the group recommended so screen readers can announce its purpose.",
+        "Accessible name for the group. Recommended so screen readers can announce its purpose.",
     },
     onItemClick: {
       control: false,
