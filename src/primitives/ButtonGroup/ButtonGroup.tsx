@@ -28,6 +28,19 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+/**
+ * A small cluster of related buttons (attached or segmented).
+ *
+ * Intended for a small, fixed set of items — segmented controls, view
+ * switchers, or a few related actions. It deliberately has no overflow
+ * handling: pass a handful of items, not dozens. For large or unbounded
+ * option sets, use a select/list pattern instead.
+ *
+ * Items use the canonical `Action` type, but `Action.intent` is intentionally
+ * not applied — every item shares the group's `variant` so a segmented control
+ * reads as a single unit. Use `selectedId` to emphasize the active item rather
+ * than per-item intent.
+ */
 export function ButtonGroup({
   items,
   variant = "attached",
