@@ -4,6 +4,7 @@ export * from "./Badge";
 export * from "./BadgeGroup";
 export * from "./Checkbox";
 export * from "./Divider";
+export * from "./Tag";
 export * from "./Toggle";
 export * from "./DropdownMenu";
 export * from "./FeaturedIcon";

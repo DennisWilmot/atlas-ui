@@ -29,7 +29,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |
 | progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | NOT_STARTED | Squad B | pending | Determinate and indeterminate. |
 | loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | NOT_STARTED | Squad B | pending | Spinner and skeleton variants. |
-| tags | Tag | REBUILD | `src/primitives/Tag` | yes | NOT_STARTED | Squad B | pending | Removable and disabled variants. |
+| tags | Tag | REBUILD | `src/primitives/Tag` | yes | BUILT | Squad B | pending | Size + tone; optional icon/avatar slots; removable via onRemove; hides when empty. |
 | sliders | Slider | REBUILD | `src/primitives/Slider` | yes | NOT_STARTED | Squad B | pending | Range with min, max, and step. |
 | featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | BUILT | Squad B | pending | Decorative icon wrapper; size + tone; aria-hidden. Icon injected via prop; hides when no icon. |
 | dividers | Divider | REBUILD | `src/primitives/Divider` | yes | BUILT | Squad B | pending | Horizontal/vertical; optional label + position; spacing; decorative vs semantic separator; hides when hidden. |
