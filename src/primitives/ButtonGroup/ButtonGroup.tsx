@@ -1,19 +1,13 @@
-import { useRef, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import { useRef, type HTMLAttributes, type KeyboardEvent } from "react";
 import { Button, type ButtonSize } from "../Button";
+import type { Action } from "../../types";
 
 export type ButtonGroupVariant = "attached" | "segmented";
 
 export type ButtonGroupSelectionMode = "toggle" | "single";
 
-export type ButtonGroupItem = {
-  id: string;
-  label: ReactNode;
-  icon?: ReactNode;
-  disabled?: boolean;
-};
-
 export type ButtonGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
-  items: ButtonGroupItem[];
+  items: Action[];
   variant?: ButtonGroupVariant;
   selectedId?: string;
   size?: ButtonSize;
@@ -46,16 +40,19 @@ export function ButtonGroup({
 }: ButtonGroupProps) {
   const groupRef = useRef<HTMLDivElement>(null);
 
-  // URA Law 4: no items, nothing meaningful to show, render nothing.
-  if (!items.length) return null;
+  // Hidden actions are respected by not rendering them.
+  const visibleItems = items.filter((item) => !item.hidden);
+
+  // URA Law 4: nothing meaningful to show, render nothing.
+  if (!visibleItems.length) return null;
 
   const single = selectionMode === "single";
   const selectable = selectedId !== undefined;
-  const firstEnabledIndex = items.findIndex((item) => !item.disabled);
+  const firstEnabledIndex = visibleItems.findIndex((item) => !item.disabled);
 
   // Roving tabindex for the radio pattern: only the selected (or, with no
   // selection, the first enabled) item is in the tab order; arrows do the rest.
-  function tabIndexFor(item: ButtonGroupItem, index: number): number | undefined {
+  function tabIndexFor(item: Action, index: number): number | undefined {
     if (!single) return undefined;
     if (selectable) return item.id === selectedId ? 0 : -1;
     return index === firstEnabledIndex ? 0 : -1;
@@ -72,17 +69,17 @@ export function ButtonGroup({
     event.preventDefault();
     const current = Array.from(buttons).indexOf(document.activeElement as HTMLButtonElement);
     const direction = forward ? 1 : -1;
-    const count = items.length;
+    const count = visibleItems.length;
 
     let next = current < 0 ? (forward ? -1 : 0) : current;
     for (let step = 0; step < count; step += 1) {
       next = (next + direction + count) % count;
-      if (!items[next].disabled) break;
+      if (!visibleItems[next].disabled) break;
     }
-    if (items[next].disabled) return; // every item disabled
+    if (visibleItems[next].disabled) return; // every item disabled
 
     buttons[next]?.focus();
-    onItemClick?.(items[next].id);
+    onItemClick?.(visibleItems[next].id);
   }
 
   return (
@@ -93,7 +90,7 @@ export function ButtonGroup({
       onKeyDown={single ? handleKeyDown : undefined}
       {...props}
     >
-      {items.map((item, index) => {
+      {visibleItems.map((item, index) => {
         const selected = selectable && item.id === selectedId;
 
         return (

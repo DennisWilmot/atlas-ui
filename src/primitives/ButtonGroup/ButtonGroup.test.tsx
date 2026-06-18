@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { ButtonGroup, type ButtonGroupItem } from "./ButtonGroup";
+import type { Action } from "../../types";
+import { ButtonGroup } from "./ButtonGroup";
 
-const items: ButtonGroupItem[] = [
+const items: Action[] = [
   { id: "day", label: "Day" },
   { id: "week", label: "Week", disabled: true },
   { id: "month", label: "Month" },
@@ -23,6 +24,30 @@ describe("ButtonGroup", () => {
 
     expect(onItemClick).toHaveBeenCalledTimes(1);
     expect(onItemClick).toHaveBeenCalledWith("month");
+  });
+
+  it("does not render hidden items", () => {
+    render(
+      <ButtonGroup
+        items={[
+          { id: "day", label: "Day" },
+          { id: "week", label: "Week", hidden: true },
+          { id: "month", label: "Month" },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Day" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Week" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Month" })).toBeInTheDocument();
+  });
+
+  it("renders nothing when every item is hidden", () => {
+    const { container } = render(
+      <ButtonGroup items={[{ id: "day", label: "Day", hidden: true }]} />,
+    );
+
+    expect(container).toBeEmptyDOMElement();
   });
 
   it("does not fire for a disabled item", () => {

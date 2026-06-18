@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { ButtonGroup, type ButtonGroupItem } from "./ButtonGroup";
+import type { Action } from "../../types";
+import { ButtonGroup } from "./ButtonGroup";
 
-const items: ButtonGroupItem[] = [
+const items: Action[] = [
   { id: "day", label: "Day" },
   { id: "week", label: "Week" },
   { id: "month", label: "Month" },
@@ -65,6 +66,13 @@ export const Disabled: Story = {
       { id: "week", label: "Week", disabled: true },
       { id: "month", label: "Month" },
     ],
+  },
+};
+
+// URA Law 4: with no visible items (empty or all hidden) the group renders nothing.
+export const EmptyHidden: Story = {
+  args: {
+    items: [],
   },
 };
 
