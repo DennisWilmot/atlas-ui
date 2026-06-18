@@ -255,6 +255,31 @@ body {
   background: var(--atlas-color-warning);
 }
 
+.atlas-avatar-group {
+  align-items: center;
+  display: inline-flex;
+}
+
+.atlas-avatar-group__item {
+  border-radius: var(--atlas-radius-full);
+  box-shadow: 0 0 0 2px var(--atlas-color-bg);
+  display: inline-flex;
+}
+
+.atlas-avatar-group__item + .atlas-avatar-group__item {
+  margin-left: -0.5rem;
+}
+
+.atlas-avatar-group__overflow {
+  align-items: center;
+  background: var(--atlas-color-surface);
+  border-radius: var(--atlas-radius-full);
+  color: var(--atlas-color-muted);
+  display: inline-flex;
+  font-weight: 600;
+  justify-content: center;
+}
+
 .atlas-color-picker {
   display: grid;
   gap: var(--atlas-space-2);

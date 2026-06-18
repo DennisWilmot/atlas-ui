@@ -11,6 +11,7 @@ export * from "./Tooltip";
 export * from "./Pagination";
 export * from "./Alert";
 export * from "./Avatar";
+export * from "./AvatarGroup";
 export * from "./Carousel";
 export * from "./ColorPicker";
 export * from "./Rating";
