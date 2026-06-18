@@ -24,7 +24,13 @@ function npmScript(script) {
 }
 
 const stageCommands = {
-  guardrails: [npmScript("guardrails:raw")],
+  guardrails: [
+    npmScript("guardrails:raw"),
+    npmScript("audit:public-components"),
+    npmScript("audit:migration-map"),
+    npmScript("audit:exports"),
+    npmScript("audit:ura-behavior"),
+  ],
   test: [npmScript("test:raw")],
   build: [npmScript("build:raw")],
   "build-storybook": [npmScript("build-storybook:raw")],
