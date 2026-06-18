@@ -24,10 +24,15 @@ const meta = {
     initials: { control: "text" },
     size: { control: "select", options: ["xs", "sm", "md", "lg", "xl"] },
     status: { control: "select", options: [undefined, "online", "offline", "busy", "away"] },
+    statusLabel: {
+      control: "text",
+      description:
+        "Accessible text announced for the status. The colored status dot is decorative (aria-hidden), so screen readers rely on this. Optional — defaults to the raw status value (e.g. \"online\"). Set it to customize or localize, e.g. \"Active now\".",
+    },
     showPlaceholder: { control: "boolean" },
   },
   parameters: {
-    controls: { include: ["src", "alt", "initials", "size", "status", "showPlaceholder"] },
+    controls: { include: ["src", "alt", "initials", "size", "status", "statusLabel", "showPlaceholder"] },
   },
 } satisfies Meta<typeof Avatar>;
 
@@ -60,6 +65,18 @@ export const Status: Story = {
       <Avatar alt="Record D" initials="RD" status="offline" />
     </div>
   ),
+};
+
+// The status dot is decorative; `statusLabel` is the accessible text a screen
+// reader announces for it. Optional — without it the raw status ("busy") is
+// announced. Inspect the accessibility tree to see "Record A, In a meeting".
+export const StatusWithLabel: Story = {
+  args: {
+    alt: "Record A",
+    initials: "RA",
+    status: "busy",
+    statusLabel: "In a meeting",
+  },
 };
 
 export const Sizes: Story = {

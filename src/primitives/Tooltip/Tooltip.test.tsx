@@ -28,6 +28,21 @@ describe("Tooltip", () => {
     expect(await screen.findByRole("tooltip")).toHaveTextContent("Supporting detail");
   });
 
+  it("reveals the tooltip on keyboard focus and describes the trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip content="Supporting detail" delay={0}>
+        <span>Trigger</span>
+      </Tooltip>,
+    );
+
+    await user.tab();
+
+    const tooltip = await screen.findByRole("tooltip");
+    expect(tooltip).toHaveTextContent("Supporting detail");
+    expect(tooltip).toHaveAttribute("id");
+  });
+
   it("returns only children when content is empty", () => {
     render(
       <Tooltip content="">

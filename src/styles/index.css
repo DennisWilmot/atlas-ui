@@ -160,10 +160,23 @@ body {
   color: var(--atlas-color-info);
 }
 
+.atlas-visually-hidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 .atlas-avatar {
   background: var(--atlas-color-surface);
   border-radius: var(--atlas-radius-full);
-  color: var(--atlas-color-muted);
+  color: var(--atlas-color-text);
   display: inline-flex;
   flex: none;
   font-weight: 600;

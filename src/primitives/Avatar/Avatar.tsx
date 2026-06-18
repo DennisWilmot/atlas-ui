@@ -11,6 +11,12 @@ export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
   size?: AvatarSize;
   status?: AvatarStatus;
   /**
+   * Accessible text announced for the status, since the colored status dot is
+   * decorative (aria-hidden). Optional — defaults to the raw status value
+   * (e.g. "online"). Set it to customize or localize, e.g. "Active now".
+   */
+  statusLabel?: string;
+  /**
    * Render a neutral placeholder when there is no image and no resolvable
    * initials. Off by default so the avatar hides itself (URA Law 4); opt in
    * when the app needs a stable slot, e.g. for row alignment.
@@ -41,6 +47,7 @@ export function Avatar({
   initials,
   size = "md",
   status,
+  statusLabel,
   showPlaceholder = false,
   className,
   ...props
@@ -86,11 +93,15 @@ export function Avatar({
         </span>
       )}
       {status ? (
-        <span
-          className={joinClasses("atlas-avatar__status", `atlas-avatar__status--${status}`)}
-          data-status={status}
-          aria-hidden="true"
-        />
+        <>
+          <span
+            className={joinClasses("atlas-avatar__status", `atlas-avatar__status--${status}`)}
+            data-status={status}
+            aria-hidden="true"
+          />
+          {/* The dot is decorative; this carries the status to assistive tech. */}
+          <span className="atlas-visually-hidden">{statusLabel ?? status}</span>
+        </>
       ) : null}
     </span>
   );

@@ -20,14 +20,26 @@ describe("Tag", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
 
     rerender(<Tag onRemove={() => {}}>Label</Tag>);
-    expect(screen.getByRole("button", { name: "Remove" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Remove Label" })).toBeInTheDocument();
+  });
+
+  it("names the remove button by the tag content, overridable via removeLabel", () => {
+    const { rerender } = render(<Tag onRemove={() => {}}>Design</Tag>);
+    expect(screen.getByRole("button", { name: "Remove Design" })).toBeInTheDocument();
+
+    rerender(
+      <Tag onRemove={() => {}} removeLabel="Dismiss">
+        Design
+      </Tag>,
+    );
+    expect(screen.getByRole("button", { name: "Dismiss" })).toBeInTheDocument();
   });
 
   it("fires onRemove when the remove button is clicked", () => {
     const onRemove = vi.fn();
     render(<Tag onRemove={onRemove}>Label</Tag>);
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Label" }));
 
     expect(onRemove).toHaveBeenCalledTimes(1);
   });

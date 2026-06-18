@@ -55,4 +55,16 @@ describe("Avatar", () => {
 
     expect(container.querySelector('[data-status="online"]')).toBeInTheDocument();
   });
+
+  it("exposes the status to assistive tech, defaulting to the status value", () => {
+    render(<Avatar alt="Record A" initials="RA" status="online" />);
+
+    expect(screen.getByText("online")).toBeInTheDocument();
+  });
+
+  it("uses statusLabel for the announced status when provided", () => {
+    render(<Avatar alt="Record A" initials="RA" status="busy" statusLabel="In a meeting" />);
+
+    expect(screen.getByText("In a meeting")).toBeInTheDocument();
+  });
 });

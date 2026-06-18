@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 export type TooltipPlacement = "top" | "right" | "bottom" | "left";
@@ -30,6 +30,7 @@ export function Tooltip({
 }: TooltipProps) {
   const [open, setOpen] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const contentId = useId();
 
   if (disabled || !hasContent(content)) {
     return <>{children}</>;
@@ -54,6 +55,10 @@ export function Tooltip({
   return (
     <span
       className={joinClasses("atlas-tooltip", `atlas-tooltip--${placement}`, className)}
+      // Focusable so keyboard users can reveal the tooltip; describes the
+      // trigger with the tooltip content while it is open.
+      tabIndex={0}
+      aria-describedby={open ? contentId : undefined}
       onBlur={hide}
       onFocus={show}
       onMouseEnter={show}
@@ -61,7 +66,7 @@ export function Tooltip({
     >
       {children}
       {open ? (
-        <span className="atlas-tooltip__content" role="tooltip">
+        <span className="atlas-tooltip__content" role="tooltip" id={contentId}>
           {content}
         </span>
       ) : null}

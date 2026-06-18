@@ -24,12 +24,17 @@ export function Tag({
   icon,
   avatar,
   onRemove,
-  removeLabel = "Remove",
+  removeLabel,
   className,
   ...props
 }: TagProps) {
   // URA Law 4: no label/content, nothing meaningful to show, render nothing.
   if (children == null || children === "" || children === false) return null;
+
+  // Name the remove button by the tag's content so it isn't an ambiguous
+  // "Remove" repeated across many tags. Overridable via removeLabel.
+  const removeButtonLabel =
+    removeLabel ?? (typeof children === "string" ? `Remove ${children}` : "Remove");
 
   return (
     <span
@@ -45,7 +50,7 @@ export function Tag({
       ) : null}
       <span className="atlas-tag__label">{children}</span>
       {onRemove ? (
-        <button type="button" className="atlas-tag__remove" aria-label={removeLabel} onClick={onRemove}>
+        <button type="button" className="atlas-tag__remove" aria-label={removeButtonLabel} onClick={onRemove}>
           <span aria-hidden="true">×</span>
         </button>
       ) : null}
