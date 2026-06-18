@@ -160,6 +160,101 @@ body {
   color: var(--atlas-color-info);
 }
 
+.atlas-avatar {
+  background: var(--atlas-color-surface);
+  border-radius: var(--atlas-radius-full);
+  color: var(--atlas-color-muted);
+  display: inline-flex;
+  flex: none;
+  font-weight: 600;
+  line-height: 1;
+  position: relative;
+  vertical-align: middle;
+}
+
+.atlas-avatar--xs {
+  font-size: 0.625rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.atlas-avatar--sm {
+  font-size: 0.75rem;
+  height: 2rem;
+  width: 2rem;
+}
+
+.atlas-avatar--md {
+  font-size: 0.875rem;
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.atlas-avatar--lg {
+  font-size: 1rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.atlas-avatar--xl {
+  font-size: 1.25rem;
+  height: 4rem;
+  width: 4rem;
+}
+
+.atlas-avatar__image {
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.atlas-avatar__fallback {
+  align-items: center;
+  border-radius: inherit;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.atlas-avatar__placeholder {
+  background: var(--atlas-color-border);
+  border-radius: inherit;
+  height: 60%;
+  width: 60%;
+}
+
+.atlas-avatar__status {
+  border: 2px solid var(--atlas-color-bg);
+  border-radius: var(--atlas-radius-full);
+  bottom: 0;
+  height: 28%;
+  min-height: 0.5rem;
+  min-width: 0.5rem;
+  position: absolute;
+  right: 0;
+  width: 28%;
+}
+
+.atlas-avatar__status--online {
+  background: var(--atlas-color-success);
+}
+
+.atlas-avatar__status--offline {
+  background: var(--atlas-color-muted);
+}
+
+.atlas-avatar__status--busy {
+  background: var(--atlas-color-danger);
+}
+
+.atlas-avatar__status--away {
+  background: var(--atlas-color-warning);
+}
+
 .atlas-color-picker {
   display: grid;
   gap: var(--atlas-space-2);
