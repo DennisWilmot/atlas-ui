@@ -65,6 +65,11 @@ export function Slider({
     return clamp(typeof init === "number" ? init : min, min, max);
   });
 
+  // URA Law 4 + WCAG 4.1.2: a single slider with no accessible name is
+  // meaningless and inaccessible. Range thumbs are always named (min/max), so
+  // this only guards single mode.
+  if (!range && !label && !ariaLabel) return null;
+
   const raw = isControlled ? (value as SliderValue) : internal;
 
   // Clamp the rendered value so it never falls outside min/max (or crosses).

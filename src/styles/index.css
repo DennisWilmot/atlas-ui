@@ -315,6 +315,16 @@ body {
   background: transparent;
 }
 
+/* Visible focus indicator on the focused thumb (appearance: none removes the
+   native ring, so put it back on the thumb itself). */
+.atlas-slider__range .atlas-slider__input:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
+.atlas-slider__range .atlas-slider__input:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
 .atlas-textarea {
   min-height: 4rem;
   padding: var(--atlas-space-2) var(--atlas-space-3);

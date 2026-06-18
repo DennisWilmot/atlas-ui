@@ -9,6 +9,20 @@ describe("Slider", () => {
     expect(screen.getByRole("slider")).toBeInTheDocument();
   });
 
+  it("renders nothing for a single slider with no accessible name", () => {
+    const { container } = render(<Slider />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("renders a range slider without an explicit label (thumbs are named)", () => {
+    render(<Slider range defaultValue={[20, 60]} />);
+
+    expect(screen.getAllByRole("slider")).toHaveLength(2);
+    expect(screen.getByRole("slider", { name: "Minimum" })).toBeInTheDocument();
+    expect(screen.getByRole("slider", { name: "Maximum" })).toBeInTheDocument();
+  });
+
   it("exposes an accessible label via label or aria-label", () => {
     const { rerender } = render(<Slider label="Volume" />);
     expect(screen.getByRole("slider", { name: "Volume" })).toBeInTheDocument();
