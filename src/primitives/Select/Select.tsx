@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import type { ChangeEvent, KeyboardEvent } from "react";
 import type { SelectItem as CanonicalOption } from "../../types";
 
@@ -161,6 +161,13 @@ function SelectListbox({
   const filtered = searchable && needle ? items.filter((item) => item.label.toLowerCase().includes(needle)) : items;
   const displayValue = searchable && open ? query : selectedItem?.label ?? "";
 
+  // Keep the active option scrolled into view while navigating a long list.
+  useEffect(() => {
+    if (!open) return;
+    const el = document.getElementById(`${listboxId}-opt-${activeIndex}`);
+    el?.scrollIntoView?.({ block: "nearest" });
+  }, [open, activeIndex, listboxId]);
+
   function openList() {
     if (disabled) return;
     setOpen(true);
@@ -185,6 +192,15 @@ function SelectListbox({
     setActiveIndex(next);
   }
 
+  function setActiveEdge(edge: "first" | "last") {
+    const enabled = filtered
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => !item.disabled)
+      .map(({ index }) => index);
+    if (!enabled.length) return;
+    setActiveIndex(edge === "first" ? enabled[0] : enabled[enabled.length - 1]);
+  }
+
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (disabled) return;
     if (event.key === "ArrowDown") {
@@ -205,6 +221,16 @@ function SelectListbox({
     } else if (event.key === "Escape") {
       setOpen(false);
       setQuery("");
+    } else if (event.key === "Home") {
+      if (open) {
+        event.preventDefault();
+        setActiveEdge("first");
+      }
+    } else if (event.key === "End") {
+      if (open) {
+        event.preventDefault();
+        setActiveEdge("last");
+      }
     } else if (event.key === " " && !searchable) {
       event.preventDefault();
       if (!open) openList();

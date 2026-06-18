@@ -128,6 +128,19 @@ describe("Select", () => {
     expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
 
+  it("moves the active option to the first and last with Home/End", async () => {
+    const user = userEvent.setup();
+    render(<Select items={manyItems} label="Choose one" />);
+
+    const c = control();
+    await user.click(c);
+    await user.keyboard("{End}");
+    expect(c.getAttribute("aria-activedescendant")).toMatch(/-opt-10$/);
+
+    await user.keyboard("{Home}");
+    expect(c.getAttribute("aria-activedescendant")).toMatch(/-opt-0$/);
+  });
+
   it("shows the no-results label when a search has no matches", async () => {
     const user = userEvent.setup();
     render(<Select items={manyItems} label="Choose one" noResultsLabel="No matches found" />);

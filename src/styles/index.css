@@ -427,7 +427,7 @@ body {
 }
 
 .atlas-select__option--active {
-  background: var(--atlas-color-surface);
+  background: #dbeafe;
 }
 
 .atlas-select__option[aria-selected="true"] {
