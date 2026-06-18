@@ -30,7 +30,9 @@ export function Textarea({
 }: TextareaProps) {
   const generatedId = useId();
   const fieldId = id ?? generatedId;
-  const hintId = hint ? `${fieldId}-hint` : undefined;
+  // The error replaces the hint: show the hint only when there is no error.
+  const showHint = Boolean(hint) && !error;
+  const hintId = showHint ? `${fieldId}-hint` : undefined;
   const errorId = error ? `${fieldId}-error` : undefined;
   const countId = showCount ? `${fieldId}-count` : undefined;
   const describedBy = [hintId, errorId, countId].filter(Boolean).join(" ") || undefined;
@@ -59,6 +61,8 @@ export function Textarea({
     onChange?.(event);
   }
 
+  const atLimit = maxLength != null && currentLength >= maxLength;
+
   return (
     <div className={joinClasses("atlas-field", className)}>
       {label ? (
@@ -84,7 +88,7 @@ export function Textarea({
         aria-invalid={Boolean(error)}
         {...props}
       />
-      {hint ? (
+      {showHint ? (
         <span className="atlas-field__hint" id={hintId}>
           {hint}
         </span>
@@ -95,7 +99,14 @@ export function Textarea({
         </span>
       ) : null}
       {showCount ? (
-        <span className="atlas-field__hint atlas-textarea__count" id={countId}>
+        <span
+          className={joinClasses(
+            "atlas-field__hint",
+            "atlas-textarea__count",
+            atLimit && "atlas-textarea__count--limit",
+          )}
+          id={countId}
+        >
           {maxLength != null ? `${currentLength} / ${maxLength}` : currentLength}
         </span>
       ) : null}

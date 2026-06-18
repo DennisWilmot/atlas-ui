@@ -137,6 +137,10 @@ body {
   justify-self: end;
 }
 
+.atlas-textarea__count--limit {
+  color: var(--atlas-color-danger);
+}
+
 .atlas-badge {
   align-items: center;
   border-radius: var(--atlas-radius-full);

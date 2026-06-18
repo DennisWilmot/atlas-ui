@@ -51,6 +51,23 @@ describe("Textarea", () => {
     expect(textarea).toHaveAccessibleDescription(/Please enter a value/);
   });
 
+  it("replaces the hint with the error when both are provided", () => {
+    render(<Textarea aria-label="Notes" hint="Keep it brief" error="Please enter a value" />);
+
+    expect(screen.queryByText("Keep it brief")).not.toBeInTheDocument();
+    expect(screen.getByText("Please enter a value")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Notes" })).toHaveAccessibleDescription("Please enter a value");
+  });
+
+  it("flags the character count at the limit", async () => {
+    const user = userEvent.setup();
+    render(<Textarea aria-label="Notes" showCount maxLength={3} />);
+
+    expect(screen.getByText("0 / 3")).not.toHaveClass("atlas-textarea__count--limit");
+    await user.type(screen.getByRole("textbox", { name: "Notes" }), "abc");
+    expect(screen.getByText("3 / 3")).toHaveClass("atlas-textarea__count--limit");
+  });
+
   it("does not update when disabled", async () => {
     const user = userEvent.setup();
     const onChange = vi.fn();

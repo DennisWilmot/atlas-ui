@@ -60,7 +60,8 @@ export const WithHint: Story = {
 };
 
 export const Error: Story = {
-  args: { error: "Please enter a value", defaultValue: "" },
+  // The hint is supplied too, but the error replaces it while present.
+  args: { error: "Please enter a value", hint: "Keep it brief", defaultValue: "" },
 };
 
 export const Disabled: Story = {
