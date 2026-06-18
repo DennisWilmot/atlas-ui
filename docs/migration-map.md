@@ -22,7 +22,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | alerts | Alert | REBUILD | `src/primitives/Alert` | yes | BUILT | Squad C | main | Injected actions only. |
 | avatars | Avatar | REBUILD | `src/primitives/Avatar` | yes | BUILT | Squad B | pending | Image src optional; initials/alt fallback; status indicator. No legacy asset URLs. |
 | avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | BUILT | Squad B | pending | Composes Avatar; maxVisible default 5 with overflow count; hides when empty. |
-| badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | NOT_STARTED | Squad B | pending | Needs collapse behavior. |
+| badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | BUILT | Squad B | pending | Composes Badge; optional maxVisible with +N overflow; hides when no visible badges. |
 | button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | NOT_STARTED | Squad B | pending | Segmented or attached buttons. |
 | radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |

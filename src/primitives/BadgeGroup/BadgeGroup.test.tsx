@@ -1,0 +1,38 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { BadgeGroup, type BadgeGroupItem } from "./BadgeGroup";
+
+const items: BadgeGroupItem[] = Array.from({ length: 6 }, (_, index) => ({
+  id: `item-${index}`,
+  label: `Label ${index}`,
+}));
+
+describe("BadgeGroup", () => {
+  it("renders nothing when there are no items", () => {
+    const { container } = render(<BadgeGroup items={[]} />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("renders nothing when maxVisible hides every badge", () => {
+    const { container } = render(<BadgeGroup items={items} maxVisible={0} />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("renders the overflow count for badges beyond maxVisible", () => {
+    render(<BadgeGroup items={items} maxVisible={2} />);
+
+    // 6 items, 2 visible, 4 hidden.
+    expect(screen.getByText("+4")).toBeInTheDocument();
+    expect(screen.getByLabelText("4 more")).toBeInTheDocument();
+  });
+
+  it("renders all badges and no overflow when maxVisible is omitted", () => {
+    render(<BadgeGroup items={items} />);
+
+    expect(screen.getByText("Label 0")).toBeInTheDocument();
+    expect(screen.getByText("Label 5")).toBeInTheDocument();
+    expect(screen.queryByText(/^\+/)).not.toBeInTheDocument();
+  });
+});

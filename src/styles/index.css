@@ -255,6 +255,13 @@ body {
   background: var(--atlas-color-warning);
 }
 
+.atlas-badge-group {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--atlas-space-2);
+}
+
 .atlas-avatar-group {
   align-items: center;
   display: inline-flex;
