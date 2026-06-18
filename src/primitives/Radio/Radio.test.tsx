@@ -13,6 +13,15 @@ describe("Radio", () => {
     expect(screen.getByRole("radio", { name: "Option B" })).toBeInTheDocument();
   });
 
+  it("renders nothing when there is no accessible name", () => {
+    const { container, rerender } = render(<Radio />);
+    expect(container).toBeEmptyDOMElement();
+
+    // An empty label is fine as long as an aria-label provides a name.
+    rerender(<Radio label="" aria-label="Option A" />);
+    expect(screen.getByRole("radio", { name: "Option A" })).toBeInTheDocument();
+  });
+
   it("renders the checked state from props (controlled)", () => {
     render(<Radio aria-label="Option A" checked onChange={() => {}} />);
 

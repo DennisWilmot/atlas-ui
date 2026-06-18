@@ -24,6 +24,14 @@ export function Radio({
 }: RadioProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+
+  // URA Law 4 + WCAG 4.1.2: a radio with no accessible name is meaningless and
+  // inaccessible. An empty label is fine as long as aria-label/aria-labelledby
+  // provides a name; with no name from any source, render nothing.
+  const hasAccessibleName =
+    Boolean(label) || Boolean(props["aria-label"]) || Boolean(props["aria-labelledby"]);
+  if (!hasAccessibleName) return null;
+
   const labelId = label ? `${inputId}-label` : undefined;
   const descId = description ? `${inputId}-desc` : undefined;
 
