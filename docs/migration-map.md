@@ -26,7 +26,7 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | NOT_STARTED | Squad B | pending | Segmented or attached buttons. |
 | radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
-| textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |
+| textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | BUILT | Squad B | pending | Controlled/uncontrolled; label or aria-label; hint/error (a11y-associated); disabled/required; autoResize; maxLength; optional character count. |
 | progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | NOT_STARTED | Squad B | pending | Determinate and indeterminate. |
 | loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | NOT_STARTED | Squad B | pending | Spinner and skeleton variants. |
 | tags | Tag | REBUILD | `src/primitives/Tag` | yes | NOT_STARTED | Squad B | pending | Removable and disabled variants. |

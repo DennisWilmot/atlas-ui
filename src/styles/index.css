@@ -117,6 +117,26 @@ body {
   font-size: 0.8125rem;
 }
 
+.atlas-field__required {
+  color: var(--atlas-color-danger);
+}
+
+.atlas-textarea {
+  min-height: 4rem;
+  padding: var(--atlas-space-2) var(--atlas-space-3);
+  resize: vertical;
+}
+
+.atlas-textarea--auto {
+  overflow: hidden;
+  resize: none;
+}
+
+.atlas-textarea__count {
+  color: var(--atlas-color-muted);
+  justify-self: end;
+}
+
 .atlas-badge {
   align-items: center;
   border-radius: var(--atlas-radius-full);
