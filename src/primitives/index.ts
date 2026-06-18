@@ -12,6 +12,7 @@ export * from "./Modal";
 export * from "./Tabs";
 export * from "./Tooltip";
 export * from "./Pagination";
+export * from "./Slider";
 export * from "./Alert";
 export * from "./Carousel";
 export * from "./ColorPicker";
