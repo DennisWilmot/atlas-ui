@@ -6,7 +6,10 @@ export type ButtonGroupVariant = "attached" | "segmented";
 
 export type ButtonGroupSelectionMode = "toggle" | "single";
 
-export type ButtonGroupProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
+export type ButtonGroupProps = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children"
+> & {
   items: Action[];
   variant?: ButtonGroupVariant;
   selectedId?: string;
@@ -37,7 +40,7 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
  * option sets, use a select/list pattern instead.
  *
  * Items use the canonical `Action` type, but `Action.intent` is intentionally
- * not applied — every item shares the group's `variant` so a segmented control
+ * not applied every item shares the group's `variant` so a segmented control
  * reads as a single unit. Use `selectedId` to emphasize the active item rather
  * than per-item intent.
  */
@@ -76,11 +79,15 @@ export function ButtonGroup({
     const backward = event.key === "ArrowLeft" || event.key === "ArrowUp";
     if (!forward && !backward) return;
 
-    const buttons = groupRef.current?.querySelectorAll<HTMLButtonElement>(".atlas-button-group__item");
+    const buttons = groupRef.current?.querySelectorAll<HTMLButtonElement>(
+      ".atlas-button-group__item",
+    );
     if (!buttons || !buttons.length) return;
 
     event.preventDefault();
-    const current = Array.from(buttons).indexOf(document.activeElement as HTMLButtonElement);
+    const current = Array.from(buttons).indexOf(
+      document.activeElement as HTMLButtonElement,
+    );
     const direction = forward ? 1 : -1;
     const count = visibleItems.length;
 
@@ -98,7 +105,11 @@ export function ButtonGroup({
   return (
     <div
       ref={groupRef}
-      className={joinClasses("atlas-button-group", `atlas-button-group--${variant}`, className)}
+      className={joinClasses(
+        "atlas-button-group",
+        `atlas-button-group--${variant}`,
+        className,
+      )}
       role={single ? "radiogroup" : "group"}
       onKeyDown={single ? handleKeyDown : undefined}
       {...props}
