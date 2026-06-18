@@ -101,8 +101,9 @@ body {
 }
 
 .atlas-button-group--attached .atlas-button-group__item[data-selected="true"] {
+  background: var(--atlas-color-primary);
   border-color: var(--atlas-color-primary);
-  color: var(--atlas-color-primary);
+  color: #ffffff;
   position: relative;
   z-index: 1;
 }
