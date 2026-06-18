@@ -317,16 +317,19 @@ function SelectCombobox({
         onBlur={() => setOpen(false)}
         onKeyDown={handleKeyDown}
       />
-      <svg
-        className="atlas-select__chevron"
-        viewBox="0 0 16 16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
+      <button
+        type="button"
+        tabIndex={-1}
         aria-hidden="true"
+        className="atlas-select__toggle"
+        disabled={disabled}
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => setOpen((prev) => !prev)}
       >
-        <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+          <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
       {open && !disabled ? (
         <ul role="listbox" id={listboxId} className="atlas-select__listbox" aria-label={ariaLabel}>
           {filtered.length ? (

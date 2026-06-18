@@ -106,6 +106,25 @@ describe("Select", () => {
     expect(onValueChange).toHaveBeenCalledWith("opt-5");
   });
 
+  it("opens the listbox via the chevron toggle", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Select items={manyItems} label="Choose one" />);
+
+    const toggle = container.querySelector(".atlas-select__toggle") as HTMLElement;
+    await user.click(toggle);
+
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+  });
+
+  it("shows the no-results label when a search has no matches", async () => {
+    const user = userEvent.setup();
+    render(<Select items={manyItems} label="Choose one" noResultsLabel="No matches found" />);
+
+    await user.type(screen.getByRole("combobox", { name: "Choose one" }), "zzzzz");
+
+    expect(screen.getByText("No matches found")).toBeInTheDocument();
+  });
+
   it("renders the controlled value correctly", () => {
     render(<Select items={fewItems} label="Choose one" value="b" onValueChange={() => {}} />);
 
