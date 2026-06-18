@@ -69,3 +69,17 @@ export const Selected: Story = {
     );
   },
 };
+
+export const AttachedSelected: Story = {
+  render: function AttachedSelectedStory() {
+    const [selected, setSelected] = useState("week");
+    return (
+      <ButtonGroup
+        variant="attached"
+        items={items}
+        selectedId={selected}
+        onItemClick={setSelected}
+      />
+    );
+  },
+};
