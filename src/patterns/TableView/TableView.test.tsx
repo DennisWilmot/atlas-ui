@@ -28,6 +28,12 @@ describe("TableView", () => {
     expect(container.firstChild).toBeNull();
   });
 
+  it("returns null for empty columns by default", () => {
+    const { container } = render(<TableView rows={makeRows(1)} columns={[]} />);
+
+    expect(container.firstChild).toBeNull();
+  });
+
   it("renders search for fifty one rows", () => {
     render(<TableView rows={makeRows(51)} columns={columns} />);
 

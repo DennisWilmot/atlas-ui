@@ -63,7 +63,7 @@ export function TableView<T extends Row = Row>({
     });
   }, [columns, controlled, filterKey, query, rows]);
 
-  if (rows.length === 0) {
+  if (rows.length === 0 || columns.length === 0) {
     if (!showEmptyState) return null;
     return <div className="atlas-empty" role="status">{emptyLabel}</div>;
   }
