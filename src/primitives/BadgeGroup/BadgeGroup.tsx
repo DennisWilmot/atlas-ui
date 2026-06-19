@@ -19,14 +19,27 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasNodeContent(node: ReactNode): boolean {
+  if (node === null || node === undefined || node === false) return false;
+  if (typeof node === "string") return node.trim().length > 0;
+  if (Array.isArray(node)) return node.some(hasNodeContent);
+
+  return true;
+}
+
+function isMeaningfulBadgeItem(item: BadgeGroupItem): boolean {
+  return Boolean(item.dot || item.icon || hasNodeContent(item.label));
+}
+
 export function BadgeGroup({ items, maxVisible, className, ...props }: BadgeGroupProps) {
-  const limit = maxVisible === undefined ? items.length : Math.max(0, maxVisible);
-  const visible = items.slice(0, limit);
+  const meaningfulItems = items.filter(isMeaningfulBadgeItem);
+  const limit = maxVisible === undefined ? meaningfulItems.length : Math.max(0, maxVisible);
+  const visible = meaningfulItems.slice(0, limit);
 
   // URA Law 4: nothing meaningful renders when there are no visible badges.
   if (!visible.length) return null;
 
-  const hidden = items.slice(limit);
+  const hidden = meaningfulItems.slice(limit);
   const overflowCount = hidden.length;
 
   return (

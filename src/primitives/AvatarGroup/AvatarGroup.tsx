@@ -24,6 +24,14 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasText(value: string | undefined): boolean {
+  return Boolean(value?.trim());
+}
+
+function isMeaningfulAvatarItem(item: AvatarGroupItem): boolean {
+  return hasText(item.label) || hasText(item.initials) || hasText(item.imageSrc);
+}
+
 export function AvatarGroup({
   items,
   maxVisible = 5,
@@ -33,12 +41,14 @@ export function AvatarGroup({
   style,
   ...props
 }: AvatarGroupProps) {
+  const meaningfulItems = items.filter(isMeaningfulAvatarItem);
+
   // URA Law 4: no items, nothing meaningful to show, render nothing.
-  if (!items.length) return null;
+  if (!meaningfulItems.length) return null;
 
   const limit = Math.max(0, maxVisible);
-  const visible = items.slice(0, limit);
-  const overflowCount = items.length - visible.length;
+  const visible = meaningfulItems.slice(0, limit);
+  const overflowCount = meaningfulItems.length - visible.length;
 
   const rootStyle: CSSProperties | undefined = ringColor
     ? { ...style, ["--atlas-avatar-group-ring" as string]: ringColor }

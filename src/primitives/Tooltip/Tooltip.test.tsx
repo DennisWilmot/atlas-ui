@@ -41,6 +41,24 @@ describe("Tooltip", () => {
     const tooltip = await screen.findByRole("tooltip");
     expect(tooltip).toHaveTextContent("Supporting detail");
     expect(tooltip).toHaveAttribute("id");
+    expect(screen.getByText("Trigger")).toHaveAttribute("aria-describedby", tooltip.id);
+  });
+
+  it("does not add an extra tab stop around an already-focusable trigger", async () => {
+    const user = userEvent.setup();
+    render(
+      <Tooltip content="Supporting detail" delay={0}>
+        <Button>Item A</Button>
+      </Tooltip>,
+    );
+
+    await user.tab();
+
+    const button = screen.getByRole("button", { name: "Item A" });
+    expect(button).toHaveFocus();
+
+    const tooltip = await screen.findByRole("tooltip");
+    expect(button).toHaveAttribute("aria-describedby", tooltip.id);
   });
 
   it("returns only children when content is empty", () => {

@@ -1,3 +1,4 @@
+import { useId } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 
 export type DividerOrientation = "horizontal" | "vertical";
@@ -24,20 +25,28 @@ export function Divider({
   label,
   labelPosition = "center",
   spacing = "md",
-  decorative = false,
+  decorative,
   hidden = false,
   className,
   ...props
 }: DividerProps) {
   if (hidden) return null;
 
+  const labelId = useId();
   // Labels only apply to horizontal dividers.
   const hasLabel = orientation === "horizontal" && label != null && label !== "";
+  const isDecorative = decorative ?? !hasLabel;
 
-  // Decorative dividers are purely visual; semantic ones expose separator role.
-  const semantics = decorative
-    ? { "aria-hidden": true as const }
-    : { role: "separator" as const, "aria-orientation": orientation };
+  // Unlabeled dividers are visual by default. Labeled or explicitly semantic
+  // dividers expose separator semantics and keep visible label text accessible.
+  const semantics =
+    isDecorative && !hasLabel
+      ? { "aria-hidden": true as const }
+      : {
+          role: "separator" as const,
+          "aria-orientation": orientation,
+          ...(hasLabel ? { "aria-labelledby": labelId } : {}),
+        };
 
   return (
     <div
@@ -52,7 +61,11 @@ export function Divider({
       {...semantics}
       {...props}
     >
-      {hasLabel ? <span className="atlas-divider__label">{label}</span> : null}
+      {hasLabel ? (
+        <span className="atlas-divider__label" id={labelId}>
+          {label}
+        </span>
+      ) : null}
     </div>
   );
 }

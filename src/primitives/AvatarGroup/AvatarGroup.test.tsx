@@ -15,6 +15,20 @@ describe("AvatarGroup", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it("renders nothing when every item is meaningless", () => {
+    const { container } = render(
+      <AvatarGroup
+        items={[
+          { id: "empty-label", label: " " },
+          { id: "empty-initials", label: "", initials: " " },
+          { id: "empty-image", label: "", imageSrc: " " },
+        ]}
+      />,
+    );
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it("renders the overflow count for items beyond maxVisible", () => {
     render(<AvatarGroup items={items} maxVisible={5} />);
 
@@ -33,6 +47,13 @@ describe("AvatarGroup", () => {
     render(<AvatarGroup items={items} />);
 
     expect(screen.getByText("+3")).toBeInTheDocument();
+  });
+
+  it("does not count meaningless items toward overflow", () => {
+    render(<AvatarGroup items={[{ id: "empty", label: " " }, ...items.slice(0, 6)]} maxVisible={5} />);
+
+    expect(screen.getByText("+1")).toBeInTheDocument();
+    expect(screen.queryByText("+2")).not.toBeInTheDocument();
   });
 
   it("applies ringColor as a CSS variable on the group", () => {

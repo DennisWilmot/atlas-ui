@@ -21,8 +21,15 @@ describe("Divider", () => {
     expect(container.querySelector(".atlas-divider--vertical")).toBeInTheDocument();
   });
 
-  it("exposes separator semantics when not decorative", () => {
-    render(<Divider orientation="vertical" />);
+  it("is decorative by default when unlabeled", () => {
+    const { container } = render(<Divider />);
+
+    expect(screen.queryByRole("separator")).not.toBeInTheDocument();
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("exposes separator semantics when explicitly not decorative", () => {
+    render(<Divider orientation="vertical" decorative={false} />);
 
     const separator = screen.getByRole("separator");
     expect(separator).toHaveAttribute("aria-orientation", "vertical");
@@ -39,5 +46,14 @@ describe("Divider", () => {
     render(<Divider label="Section" />);
 
     expect(screen.getByText("Section")).toBeInTheDocument();
+  });
+
+  it("keeps labeled dividers accessible even when decorative is requested", () => {
+    render(<Divider label="Section" decorative />);
+
+    const separator = screen.getByRole("separator");
+    const label = screen.getByText("Section");
+
+    expect(separator).toHaveAttribute("aria-labelledby", label.id);
   });
 });
