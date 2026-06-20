@@ -29,6 +29,10 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export function RadioGroup({
   items,
   value,
@@ -46,9 +50,13 @@ export function RadioGroup({
   const generatedName = useId();
   const labelId = useId();
   const groupName = name ?? generatedName;
+  const hasLabel = hasMeaningfulText(label);
+  const hasAccessibleName =
+    hasLabel || hasMeaningfulText(props["aria-label"]) || hasMeaningfulText(props["aria-labelledby"]);
+  const visibleItems = items.filter((item) => hasMeaningfulText(item.label));
 
-  // URA Law 4: no options, nothing meaningful to show, render nothing.
-  if (!items.length) return null;
+  // URA Law 4: no meaningful options or group name, nothing useful to show.
+  if (!visibleItems.length || !hasAccessibleName) return null;
 
   const isControlled = value !== undefined;
 
@@ -56,19 +64,19 @@ export function RadioGroup({
     <div
       className={joinClasses("atlas-radio-group", `atlas-radio-group--${orientation}`, className)}
       role="radiogroup"
-      aria-labelledby={label ? labelId : undefined}
+      aria-labelledby={hasLabel ? labelId : undefined}
       aria-required={required || undefined}
       aria-orientation={orientation}
       aria-disabled={disabled || undefined}
       {...props}
     >
-      {label ? (
+      {hasLabel ? (
         <span id={labelId} className="atlas-radio-group__label">
           {label}
         </span>
       ) : null}
       <div className="atlas-radio-group__options">
-        {items.map((item) => {
+        {visibleItems.map((item) => {
           const itemDisabled = disabled || Boolean(item.disabled);
           const selectionProps = isControlled
             ? { checked: item.value === value }

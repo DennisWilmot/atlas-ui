@@ -13,6 +13,10 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export function Radio({
   className,
   label,
@@ -24,16 +28,20 @@ export function Radio({
 }: RadioProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  const ariaLabel = props["aria-label"];
+  const ariaLabelledBy = props["aria-labelledby"];
+  const hasLabel = hasMeaningfulText(label);
+  const hasDescription = hasMeaningfulText(description);
 
   // URA Law 4 + WCAG 4.1.2: a radio with no accessible name is meaningless and
   // inaccessible. An empty label is fine as long as aria-label/aria-labelledby
   // provides a name; with no name from any source, render nothing.
   const hasAccessibleName =
-    Boolean(label) || Boolean(props["aria-label"]) || Boolean(props["aria-labelledby"]);
+    hasLabel || hasMeaningfulText(ariaLabel) || hasMeaningfulText(ariaLabelledBy);
   if (!hasAccessibleName) return null;
 
-  const labelId = label ? `${inputId}-label` : undefined;
-  const descId = description ? `${inputId}-desc` : undefined;
+  const labelId = hasLabel ? `${inputId}-label` : undefined;
+  const descId = hasDescription ? `${inputId}-desc` : undefined;
 
   return (
     <label
@@ -56,14 +64,14 @@ export function Radio({
         aria-describedby={descId}
         {...props}
       />
-      {label || description ? (
+      {hasLabel || hasDescription ? (
         <span className="atlas-radio__body">
-          {label ? (
+          {hasLabel ? (
             <span id={labelId} className="atlas-radio__label">
               {label}
             </span>
           ) : null}
-          {description ? (
+          {hasDescription ? (
             <span id={descId} className="atlas-radio__description">
               {description}
             </span>

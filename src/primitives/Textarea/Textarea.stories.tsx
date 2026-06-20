@@ -83,6 +83,11 @@ export const Required: Story = {
   args: { required: true, hint: "This field is required" },
 };
 
+// URA Law 4: with no accessible name, the textarea renders nothing.
+export const NoAccessibleNameHidden: Story = {
+  args: { label: undefined, placeholder: undefined },
+};
+
 export const ControlledExample: Story = {
   render: function ControlledStory() {
     const [value, setValue] = useState("Controlled value");

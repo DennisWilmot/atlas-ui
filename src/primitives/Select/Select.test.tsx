@@ -27,6 +27,20 @@ describe("Select", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it("renders nothing without meaningful options or a meaningful accessible name", () => {
+    const { container, rerender } = render(<Select items={fewItems} />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Select items={fewItems} label="   " />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Select items={[{ id: "empty", value: "empty", label: "   " }]} label="Choose one" />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Select items={fewItems} aria-label="Choose one" />);
+    expect(control()).toBeInTheDocument();
+  });
+
   it("exposes an accessible label", () => {
     render(<Select items={fewItems} label="Choose one" />);
 

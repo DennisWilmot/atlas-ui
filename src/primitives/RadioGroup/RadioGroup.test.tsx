@@ -17,6 +17,31 @@ describe("RadioGroup", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
+  it("renders nothing without a meaningful group name", () => {
+    const { container, rerender } = render(<RadioGroup items={items} />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<RadioGroup items={items} label="   " />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<RadioGroup items={items} aria-label="Choose one" />);
+    expect(screen.getByRole("radiogroup", { name: "Choose one" })).toBeInTheDocument();
+  });
+
+  it("filters meaningless items and hides when none remain", () => {
+    const mixedItems: RadioGroupItem[] = [
+      { id: "empty", value: "empty", label: "   " },
+      { id: "a", value: "a", label: "Option A" },
+    ];
+    const { rerender, container } = render(<RadioGroup items={mixedItems} label="Choose one" />);
+
+    expect(screen.getAllByRole("radio")).toHaveLength(1);
+    expect(screen.getByRole("radio", { name: "Option A" })).toBeInTheDocument();
+
+    rerender(<RadioGroup items={[{ id: "empty", value: "empty", label: "   " }]} label="Choose one" />);
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it("exposes an accessible group name", () => {
     render(<RadioGroup items={items} label="Choose one" />);
 

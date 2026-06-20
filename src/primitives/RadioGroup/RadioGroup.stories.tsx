@@ -85,6 +85,11 @@ export const EmptyHidden: Story = {
   args: { items: [] },
 };
 
+// URA Law 4: with no accessible group name, the group renders nothing.
+export const NoGroupNameHidden: Story = {
+  args: { label: undefined },
+};
+
 export const ControlledExample: Story = {
   render: function ControlledStory() {
     const [value, setValue] = useState("a");

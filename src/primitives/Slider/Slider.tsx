@@ -27,6 +27,10 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 function clamp(n: number, lo: number, hi: number): number {
   return Math.min(Math.max(n, lo), hi);
 }
@@ -52,7 +56,9 @@ export function Slider({
 }: SliderProps) {
   const generatedId = useId();
   const baseId = id ?? generatedId;
-  const labelId = label ? `${baseId}-label` : undefined;
+  const hasLabel = hasMeaningfulText(label);
+  const hasAriaLabel = hasMeaningfulText(ariaLabel);
+  const labelId = hasLabel ? `${baseId}-label` : undefined;
 
   const isControlled = value !== undefined;
 
@@ -68,7 +74,7 @@ export function Slider({
   // URA Law 4 + WCAG 4.1.2: a single slider with no accessible name is
   // meaningless and inaccessible. Range thumbs are always named (min/max), so
   // this only guards single mode.
-  if (!range && !label && !ariaLabel) return null;
+  if (!range && !hasLabel && !hasAriaLabel) return null;
 
   const raw = isControlled ? (value as SliderValue) : internal;
 
@@ -104,16 +110,16 @@ export function Slider({
   }
 
   const pct = (n: number) => (max > min ? ((n - min) / (max - min)) * 100 : 0);
-  const baseName = label ?? ariaLabel;
+  const baseName = hasLabel ? label : hasAriaLabel ? ariaLabel : undefined;
   const valueText = range
     ? `${(current as [number, number])[0]} - ${(current as [number, number])[1]}`
     : `${current as number}`;
 
   return (
     <div className={joinClasses("atlas-slider", disabled && "atlas-slider--disabled", className)}>
-      {label || showValue ? (
+      {hasLabel || showValue ? (
         <div className="atlas-slider__header">
-          {label ? (
+          {hasLabel ? (
             <span
               id={labelId}
               className={joinClasses("atlas-slider__label", hideLabelVisually && "atlas-visually-hidden")}

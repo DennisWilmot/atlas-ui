@@ -61,6 +61,11 @@ export const Required: Story = {
   args: { required: true },
 };
 
+// URA Law 4: with no accessible name, the radio renders nothing.
+export const NoAccessibleNameHidden: Story = {
+  args: { label: undefined },
+};
+
 export const ControlledExample: Story = {
   render: function ControlledStory() {
     const [value, setValue] = useState("a");

@@ -17,8 +17,11 @@ describe("Radio", () => {
     const { container, rerender } = render(<Radio />);
     expect(container).toBeEmptyDOMElement();
 
+    rerender(<Radio label="   " />);
+    expect(container).toBeEmptyDOMElement();
+
     // An empty label is fine as long as an aria-label provides a name.
-    rerender(<Radio label="" aria-label="Option A" />);
+    rerender(<Radio label="   " aria-label="Option A" />);
     expect(screen.getByRole("radio", { name: "Option A" })).toBeInTheDocument();
   });
 

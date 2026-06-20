@@ -10,8 +10,11 @@ describe("Slider", () => {
   });
 
   it("renders nothing for a single slider with no accessible name", () => {
-    const { container } = render(<Slider />);
+    const { container, rerender } = render(<Slider />);
 
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Slider label="   " aria-label="   " />);
     expect(container).toBeEmptyDOMElement();
   });
 

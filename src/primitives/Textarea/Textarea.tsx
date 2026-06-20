@@ -13,6 +13,10 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export function Textarea({
   className,
   label,
@@ -30,10 +34,17 @@ export function Textarea({
 }: TextareaProps) {
   const generatedId = useId();
   const fieldId = id ?? generatedId;
+  const ariaLabel = props["aria-label"];
+  const ariaLabelledBy = props["aria-labelledby"];
+  const hasLabel = hasMeaningfulText(label);
+  const hasAriaLabel = hasMeaningfulText(ariaLabel);
+  const hasAriaLabelledBy = hasMeaningfulText(ariaLabelledBy);
+  const hasHint = hasMeaningfulText(hint);
+  const hasError = hasMeaningfulText(error);
   // The error replaces the hint: show the hint only when there is no error.
-  const showHint = Boolean(hint) && !error;
+  const showHint = hasHint && !hasError;
   const hintId = showHint ? `${fieldId}-hint` : undefined;
-  const errorId = error ? `${fieldId}-error` : undefined;
+  const errorId = hasError ? `${fieldId}-error` : undefined;
   const countId = showCount ? `${fieldId}-count` : undefined;
   const describedBy = [hintId, errorId, countId].filter(Boolean).join(" ") || undefined;
 
@@ -63,9 +74,11 @@ export function Textarea({
 
   const atLimit = maxLength != null && currentLength >= maxLength;
 
+  if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy) return null;
+
   return (
     <div className={joinClasses("atlas-field", className)}>
-      {label ? (
+      {hasLabel ? (
         <label className="atlas-field__label" htmlFor={fieldId}>
           {label}
           {required ? (
@@ -85,13 +98,13 @@ export function Textarea({
         maxLength={maxLength}
         required={required}
         aria-describedby={describedBy}
-        aria-invalid={Boolean(error)}
+        aria-invalid={hasError}
         {...props}
       />
-      {showHint || error || showCount ? (
+      {showHint || hasError || showCount ? (
         <div className="atlas-textarea__footer">
           <span className="atlas-textarea__message">
-            {error ? (
+            {hasError ? (
               <span className="atlas-field__error" id={errorId}>
                 {error}
               </span>

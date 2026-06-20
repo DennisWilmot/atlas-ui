@@ -13,6 +13,17 @@ describe("Textarea", () => {
     expect(screen.getByRole("textbox", { name: "Notes" })).toBeInTheDocument();
   });
 
+  it("renders nothing without a meaningful accessible name", () => {
+    const { container, rerender } = render(<Textarea />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Textarea label="   " />);
+    expect(container).toBeEmptyDOMElement();
+
+    rerender(<Textarea label="   " aria-label="Notes" />);
+    expect(screen.getByRole("textbox", { name: "Notes" })).toBeInTheDocument();
+  });
+
   it("updates the value on change (uncontrolled)", async () => {
     const user = userEvent.setup();
     render(<Textarea aria-label="Notes" />);

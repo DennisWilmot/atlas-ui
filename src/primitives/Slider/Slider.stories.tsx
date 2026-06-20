@@ -75,6 +75,11 @@ export const Disabled: Story = {
   args: { disabled: true },
 };
 
+// URA Law 4: a single slider with no accessible name renders nothing.
+export const NoAccessibleNameHidden: Story = {
+  args: { label: undefined },
+};
+
 export const ControlledExample: Story = {
   render: function ControlledStory() {
     const [value, setValue] = useState<SliderValue>(60);

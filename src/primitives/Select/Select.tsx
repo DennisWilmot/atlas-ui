@@ -34,6 +34,10 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export function Select({
   items,
   value,
@@ -53,20 +57,25 @@ export function Select({
   const generatedId = useId();
   const baseId = id ?? generatedId;
   const controlId = `${baseId}-control`;
-  const labelId = label ? `${baseId}-label` : undefined;
+  const hasLabel = hasMeaningfulText(label);
+  const hasAriaLabel = hasMeaningfulText(ariaLabel);
+  const hasHint = hasMeaningfulText(hint);
+  const hasError = hasMeaningfulText(error);
+  const visibleItems = items.filter((item) => hasMeaningfulText(item.label));
+  const labelId = hasLabel ? `${baseId}-label` : undefined;
   // The error replaces the hint: only describe/show the hint when there is no error.
-  const hintId = hint && !error ? `${baseId}-hint` : undefined;
-  const errorId = error ? `${baseId}-error` : undefined;
+  const hintId = hasHint && !hasError ? `${baseId}-hint` : undefined;
+  const errorId = hasError ? `${baseId}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
   const isControlled = value !== undefined;
   // If only one item exists and nothing is preselected, select it by default.
   const [internal, setInternal] = useState<string | undefined>(
-    defaultValue ?? (items.length === 1 ? items[0].value : undefined),
+    defaultValue ?? (visibleItems.length === 1 ? visibleItems[0].value : undefined),
   );
 
-  // URA Law 4: no options, nothing meaningful to show, render nothing.
-  if (!items.length) return null;
+  // URA Law 4 + WCAG 4.1.2: no meaningful options or control name, no UI.
+  if (!visibleItems.length || (!hasLabel && !hasAriaLabel)) return null;
 
   const currentValue = isControlled ? value : internal;
 
@@ -75,11 +84,11 @@ export function Select({
     onValueChange?.(next);
   }
 
-  const searchable = items.length > OVERFLOW_THRESHOLD;
+  const searchable = visibleItems.length > OVERFLOW_THRESHOLD;
 
   return (
     <div className={joinClasses("atlas-field", "atlas-select", className)}>
-      {label ? (
+      {hasLabel ? (
         <label className="atlas-field__label" id={labelId} htmlFor={controlId}>
           {label}
           {required ? (
@@ -91,7 +100,7 @@ export function Select({
       ) : null}
 
       <SelectListbox
-        items={items}
+        items={visibleItems}
         value={currentValue}
         onSelect={handleSelect}
         controlId={controlId}
@@ -99,19 +108,19 @@ export function Select({
         disabled={disabled}
         required={required}
         describedBy={describedBy}
-        invalid={Boolean(error)}
-        ariaLabel={label ? undefined : ariaLabel}
+        invalid={hasError}
+        ariaLabel={hasLabel ? undefined : ariaLabel}
         labelledBy={labelId}
         noResultsLabel={noResultsLabel}
         searchable={searchable}
       />
 
-      {hint && !error ? (
+      {hasHint && !hasError ? (
         <span className="atlas-field__hint" id={hintId}>
           {hint}
         </span>
       ) : null}
-      {error ? (
+      {hasError ? (
         <span className="atlas-field__error" id={errorId}>
           {error}
         </span>

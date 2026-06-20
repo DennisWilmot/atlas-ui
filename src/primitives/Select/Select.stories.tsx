@@ -74,6 +74,16 @@ export const EmptyHidden: Story = {
   args: { items: [] },
 };
 
+// URA Law 4: with no accessible name, the select renders nothing.
+export const NoAccessibleNameHidden: Story = {
+  args: { label: undefined },
+};
+
+// URA Law 4: options with empty labels are not meaningful options.
+export const EmptyOptionsHidden: Story = {
+  args: { items: [{ id: "empty", value: "empty", label: "   " }] },
+};
+
 export const DisabledOption: Story = {
   args: {
     items: [
