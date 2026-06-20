@@ -42,6 +42,7 @@
     "dev": "vite",
     "build": "node scripts/verification-runner.mjs build",
     "build:raw": "tsc -b tsconfig.app.json tsconfig.node.json && vite build",
+    "prepack": "npm run build",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "node scripts/verification-runner.mjs build-storybook",
