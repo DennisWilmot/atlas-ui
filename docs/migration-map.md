@@ -24,13 +24,13 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | BUILT | Squad B | pending | Composes Avatar; maxVisible default 5 with overflow count; hides when empty. |
 | badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | BUILT | Squad B | pending | Composes Badge; optional maxVisible with +N overflow; hides when no visible badges. |
 | button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | BUILT | Squad B | pending | Composes Button; attached/segmented variants; disabled items; optional selected (aria-pressed); injected onItemClick; hides when empty. |
-| radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
-| radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
-| textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |
+| radios | Radio | REBUILD | `src/primitives/Radio` | yes | BUILT | Squad B | pending | Native radio; controlled/uncontrolled; label or aria-label; optional description; default/card variants; name/required/disabled. |
+| radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | BUILT | Squad B | pending | Composes Radio; items[]; controlled/uncontrolled; role=radiogroup; orientation/variant; group/item disabled; required; hides when empty. |
+| textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | BUILT | Squad B | pending | Controlled/uncontrolled; label or aria-label; hint/error (a11y-associated); disabled/required; autoResize; maxLength; optional character count. |
 | progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | BUILT | Squad B | pending | Determinate and indeterminate; value/min/max; optional label with visually-hidden option; role=progressbar. |
 | loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | BUILT | Squad B | pending | Spinner/skeleton variants; sizes; role=status label with hideLabelVisually; hides when inactive; respects reduced motion. |
+| sliders | Slider | REBUILD | `src/primitives/Slider` | yes | BUILT | Squad B | pending | Native range inputs; single + range (two handles); min/max/step; controlled/uncontrolled; label/aria-label; value + min/max display; onValueCommit; clamped; disabled. |
 | tags | Tag | REBUILD | `src/primitives/Tag` | yes | BUILT | Squad B | pending | Size + tone; optional icon/avatar slots; removable via onRemove; hides when empty. |
-| sliders | Slider | REBUILD | `src/primitives/Slider` | yes | NOT_STARTED | Squad B | pending | Range with min, max, and step. |
 | featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | BUILT | Squad B | pending | Decorative icon wrapper; size + tone; aria-hidden. Icon injected via prop; hides when no icon. |
 | dividers | Divider | REBUILD | `src/primitives/Divider` | yes | BUILT | Squad B | pending | Horizontal/vertical; optional label + position; spacing; decorative vs semantic separator; hides when hidden. |
 | carousels | Carousel | REBUILD | `src/primitives/Carousel` | yes | BUILT | Squad B | main | Slides supplied by props. |

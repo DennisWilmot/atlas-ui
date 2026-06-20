@@ -1,0 +1,323 @@
+import { useEffect, useId, useState } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
+import type { SelectItem as CanonicalOption } from "../../types";
+
+// Reuse the canonical SelectItem ({ id, label, disabled? }) and add the value
+// the form control resolves to.
+export type SelectOption = CanonicalOption & {
+  value: string;
+};
+
+export type SelectProps = {
+  items: SelectOption[];
+  value?: string;
+  defaultValue?: string;
+  onValueChange?: (value: string) => void;
+  label?: string;
+  placeholder?: string;
+  hint?: string;
+  error?: string;
+  disabled?: boolean;
+  required?: boolean;
+  id?: string;
+  className?: string;
+  /** Optional message shown when a search yields no matches (no default copy). */
+  noResultsLabel?: string;
+  "aria-label"?: string;
+};
+
+// URA Rule 12 / DESIGN.md overflow threshold: at most this many options render a
+// plain (non-searchable) dropdown; more enable type-to-filter automatically.
+const OVERFLOW_THRESHOLD = 10;
+
+function joinClasses(...classes: Array<string | false | undefined>): string {
+  return classes.filter(Boolean).join(" ");
+}
+
+function hasMeaningfulText(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+export function Select({
+  items,
+  value,
+  defaultValue,
+  onValueChange,
+  label,
+  placeholder,
+  hint,
+  error,
+  disabled = false,
+  required = false,
+  id,
+  className,
+  noResultsLabel,
+  "aria-label": ariaLabel,
+}: SelectProps) {
+  const generatedId = useId();
+  const baseId = id ?? generatedId;
+  const controlId = `${baseId}-control`;
+  const hasLabel = hasMeaningfulText(label);
+  const hasAriaLabel = hasMeaningfulText(ariaLabel);
+  const hasHint = hasMeaningfulText(hint);
+  const hasError = hasMeaningfulText(error);
+  const visibleItems = items.filter((item) => hasMeaningfulText(item.label));
+  const labelId = hasLabel ? `${baseId}-label` : undefined;
+  // The error replaces the hint: only describe/show the hint when there is no error.
+  const hintId = hasHint && !hasError ? `${baseId}-hint` : undefined;
+  const errorId = hasError ? `${baseId}-error` : undefined;
+  const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
+
+  const isControlled = value !== undefined;
+  // If only one item exists and nothing is preselected, select it by default.
+  const [internal, setInternal] = useState<string | undefined>(
+    defaultValue ?? (visibleItems.length === 1 ? visibleItems[0].value : undefined),
+  );
+
+  // URA Law 4 + WCAG 4.1.2: no meaningful options or control name, no UI.
+  if (!visibleItems.length || (!hasLabel && !hasAriaLabel)) return null;
+
+  const currentValue = isControlled ? value : internal;
+
+  function handleSelect(next: string) {
+    if (!isControlled) setInternal(next);
+    onValueChange?.(next);
+  }
+
+  const searchable = visibleItems.length > OVERFLOW_THRESHOLD;
+
+  return (
+    <div className={joinClasses("atlas-field", "atlas-select", className)}>
+      {hasLabel ? (
+        <label className="atlas-field__label" id={labelId} htmlFor={controlId}>
+          {label}
+          {required ? (
+            <span className="atlas-field__required" aria-hidden="true">
+              {" *"}
+            </span>
+          ) : null}
+        </label>
+      ) : null}
+
+      <SelectListbox
+        items={visibleItems}
+        value={currentValue}
+        onSelect={handleSelect}
+        controlId={controlId}
+        placeholder={placeholder}
+        disabled={disabled}
+        required={required}
+        describedBy={describedBy}
+        invalid={hasError}
+        ariaLabel={hasLabel ? undefined : ariaLabel}
+        labelledBy={labelId}
+        noResultsLabel={noResultsLabel}
+        searchable={searchable}
+      />
+
+      {hasHint && !hasError ? (
+        <span className="atlas-field__hint" id={hintId}>
+          {hint}
+        </span>
+      ) : null}
+      {hasError ? (
+        <span className="atlas-field__error" id={errorId}>
+          {error}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+type ListboxProps = {
+  items: SelectOption[];
+  value: string | undefined;
+  onSelect: (value: string) => void;
+  controlId: string;
+  placeholder?: string;
+  disabled: boolean;
+  required: boolean;
+  describedBy?: string;
+  invalid: boolean;
+  ariaLabel?: string;
+  labelledBy?: string;
+  noResultsLabel?: string;
+  searchable: boolean;
+};
+
+function SelectListbox({
+  items,
+  value,
+  onSelect,
+  controlId,
+  placeholder,
+  disabled,
+  required,
+  describedBy,
+  invalid,
+  ariaLabel,
+  labelledBy,
+  noResultsLabel,
+  searchable,
+}: ListboxProps) {
+  const listboxId = `${controlId}-listbox`;
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectedItem = items.find((item) => item.value === value);
+  const needle = query.trim().toLowerCase();
+  const filtered = searchable && needle ? items.filter((item) => item.label.toLowerCase().includes(needle)) : items;
+  const displayValue = searchable && open ? query : selectedItem?.label ?? "";
+
+  // Keep the active option scrolled into view while navigating a long list.
+  useEffect(() => {
+    if (!open) return;
+    const el = document.getElementById(`${listboxId}-opt-${activeIndex}`);
+    el?.scrollIntoView?.({ block: "nearest" });
+  }, [open, activeIndex, listboxId]);
+
+  function openList() {
+    if (disabled) return;
+    setOpen(true);
+    const selectedIndex = filtered.findIndex((item) => item.value === value);
+    setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+  }
+
+  function commitSelect(item: SelectOption) {
+    if (item.disabled) return;
+    onSelect(item.value);
+    setOpen(false);
+    setQuery("");
+  }
+
+  function moveActive(direction: 1 | -1) {
+    if (!filtered.length) return;
+    let next = activeIndex;
+    for (let i = 0; i < filtered.length; i += 1) {
+      next = (next + direction + filtered.length) % filtered.length;
+      if (!filtered[next].disabled) break;
+    }
+    setActiveIndex(next);
+  }
+
+  function setActiveEdge(edge: "first" | "last") {
+    const enabled = filtered
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => !item.disabled)
+      .map(({ index }) => index);
+    if (!enabled.length) return;
+    setActiveIndex(edge === "first" ? enabled[0] : enabled[enabled.length - 1]);
+  }
+
+  function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (disabled) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (!open) openList();
+      else moveActive(1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (open) moveActive(-1);
+    } else if (event.key === "Enter") {
+      if (open && filtered[activeIndex]) {
+        event.preventDefault();
+        commitSelect(filtered[activeIndex]);
+      } else if (!open) {
+        event.preventDefault();
+        openList();
+      }
+    } else if (event.key === "Escape") {
+      setOpen(false);
+      setQuery("");
+    } else if (event.key === "Home") {
+      if (open) {
+        event.preventDefault();
+        setActiveEdge("first");
+      }
+    } else if (event.key === "End") {
+      if (open) {
+        event.preventDefault();
+        setActiveEdge("last");
+      }
+    } else if (event.key === " " && !searchable) {
+      event.preventDefault();
+      if (!open) openList();
+    }
+  }
+
+  return (
+    <div className="atlas-select__combobox">
+      <input
+        type="text"
+        role="combobox"
+        id={controlId}
+        className="atlas-field__control atlas-select__input"
+        value={displayValue}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={!searchable}
+        autoComplete="off"
+        aria-expanded={open}
+        aria-controls={listboxId}
+        aria-autocomplete={searchable ? "list" : undefined}
+        aria-required={required || undefined}
+        aria-activedescendant={open && filtered[activeIndex] ? `${listboxId}-opt-${activeIndex}` : undefined}
+        aria-describedby={describedBy}
+        aria-invalid={invalid}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabel ? undefined : labelledBy}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
+          if (!searchable) return;
+          setQuery(event.target.value);
+          setOpen(true);
+          setActiveIndex(0);
+        }}
+        onClick={() => openList()}
+        onBlur={() => setOpen(false)}
+        onKeyDown={handleKeyDown}
+      />
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-hidden="true"
+        className="atlas-select__toggle"
+        disabled={disabled}
+        onMouseDown={(event) => event.preventDefault()}
+        onClick={() => (open ? setOpen(false) : openList())}
+      >
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+          <path d="M4 6l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {open && !disabled ? (
+        <ul role="listbox" id={listboxId} className="atlas-select__listbox" aria-label={ariaLabel}>
+          {filtered.length ? (
+            filtered.map((item, index) => (
+              <li
+                key={item.id}
+                id={`${listboxId}-opt-${index}`}
+                role="option"
+                aria-selected={item.value === value}
+                aria-disabled={item.disabled || undefined}
+                className={joinClasses(
+                  "atlas-select__option",
+                  index === activeIndex && "atlas-select__option--active",
+                  item.disabled && "atlas-select__option--disabled",
+                )}
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => commitSelect(item)}
+              >
+                {item.label}
+              </li>
+            ))
+          ) : noResultsLabel ? (
+            <li className="atlas-select__empty" aria-disabled="true">
+              {noResultsLabel}
+            </li>
+          ) : null}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
