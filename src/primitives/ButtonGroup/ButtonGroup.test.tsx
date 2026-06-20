@@ -9,9 +9,25 @@ const items: Action[] = [
   { id: "month", label: "Month" },
 ];
 
+const icon = <span aria-hidden="true">*</span>;
+
 describe("ButtonGroup", () => {
   it("renders nothing when there are no items", () => {
     const { container } = render(<ButtonGroup items={[]} />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it("renders nothing when every item is hidden or meaningless", () => {
+    const { container } = render(
+      <ButtonGroup
+        items={[
+          { id: "blank", label: "" },
+          { id: "space", label: " " },
+          { id: "hidden", label: "Hidden", hidden: true },
+        ]}
+      />,
+    );
 
     expect(container).toBeEmptyDOMElement();
   });
@@ -39,6 +55,22 @@ describe("ButtonGroup", () => {
 
     expect(screen.getByRole("button", { name: "Day" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Week" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Month" })).toBeInTheDocument();
+  });
+
+  it("does not render meaningless text-only items", () => {
+    render(
+      <ButtonGroup
+        items={[
+          { id: "blank", label: "" },
+          { id: "space", label: " " },
+          { id: "icon", label: "", icon },
+          { id: "month", label: "Month" },
+        ]}
+      />,
+    );
+
+    expect(screen.queryAllByRole("button")).toHaveLength(2);
     expect(screen.getByRole("button", { name: "Month" })).toBeInTheDocument();
   });
 
@@ -86,5 +118,19 @@ describe("ButtonGroup", () => {
 
     // "Week" is disabled, so focus/selection skips to "Month".
     expect(onItemClick).toHaveBeenCalledWith("month");
+  });
+
+  it("keeps an enabled radio tabbable when selectedId points to a disabled item", () => {
+    render(<ButtonGroup items={items} selectionMode="single" selectedId="week" aria-label="View" />);
+
+    expect(screen.getByRole("radio", { name: "Day" })).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("radio", { name: "Week" })).toHaveAttribute("tabindex", "-1");
+  });
+
+  it("keeps an enabled radio tabbable when selectedId is missing", () => {
+    render(<ButtonGroup items={items} selectionMode="single" selectedId="missing" aria-label="View" />);
+
+    expect(screen.getByRole("radio", { name: "Day" })).toHaveAttribute("tabindex", "0");
+    expect(screen.getByRole("radio", { name: "Month" })).toHaveAttribute("tabindex", "-1");
   });
 });

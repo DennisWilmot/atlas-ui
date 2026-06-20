@@ -31,6 +31,14 @@ function joinClasses(...classes: Array<string | false | undefined>): string {
   return classes.filter(Boolean).join(" ");
 }
 
+function hasMeaningfulLabel(label: string): boolean {
+  return label.trim().length > 0;
+}
+
+function isMeaningfulAction(item: Action): boolean {
+  return !item.hidden && (hasMeaningfulLabel(item.label) || Boolean(item.icon));
+}
+
 /**
  * A small cluster of related buttons (attached or segmented).
  *
@@ -56,8 +64,8 @@ export function ButtonGroup({
 }: ButtonGroupProps) {
   const groupRef = useRef<HTMLDivElement>(null);
 
-  // Hidden actions are respected by not rendering them.
-  const visibleItems = items.filter((item) => !item.hidden);
+  // Hidden or meaningless actions are respected by not rendering them.
+  const visibleItems = items.filter(isMeaningfulAction);
 
   // URA Law 4: nothing meaningful to show, render nothing.
   if (!visibleItems.length) return null;
@@ -65,13 +73,17 @@ export function ButtonGroup({
   const single = selectionMode === "single";
   const selectable = selectedId !== undefined;
   const firstEnabledIndex = visibleItems.findIndex((item) => !item.disabled);
+  const selectedEnabledIndex = visibleItems.findIndex(
+    (item) => item.id === selectedId && !item.disabled,
+  );
+  const activeIndex = selectedEnabledIndex >= 0 ? selectedEnabledIndex : firstEnabledIndex;
 
   // Roving tabindex for the radio pattern: only the selected (or, with no
   // selection, the first enabled) item is in the tab order; arrows do the rest.
   function tabIndexFor(item: Action, index: number): number | undefined {
     if (!single) return undefined;
-    if (selectable) return item.id === selectedId ? 0 : -1;
-    return index === firstEnabledIndex ? 0 : -1;
+    if (index === activeIndex && !item.disabled) return 0;
+    return -1;
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
