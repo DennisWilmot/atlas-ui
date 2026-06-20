@@ -52,4 +52,11 @@ describe("ProgressIndicator", () => {
     expect(screen.getByRole("progressbar", { name: "Uploading" })).toBeInTheDocument();
     expect(screen.getByText("Uploading")).toHaveClass("atlas-visually-hidden");
   });
+
+  it("ignores labels without meaningful content", () => {
+    const { container } = render(<ProgressIndicator value={40} label=" " />);
+
+    expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-labelledby");
+    expect(container.querySelector(".atlas-progress__label")).not.toBeInTheDocument();
+  });
 });

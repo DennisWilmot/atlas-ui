@@ -69,3 +69,8 @@ export const VisuallyHiddenLabel: Story = {
 export const InactiveHidden: Story = {
   args: { active: false, label: "Loading" },
 };
+
+// URA Law 4: active with no accessible loading text renders nothing.
+export const NoLabelHidden: Story = {
+  args: { label: "" },
+};
