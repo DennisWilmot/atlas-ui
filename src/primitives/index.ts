@@ -1,4 +1,5 @@
 export * from "./Button";
+export * from "./ButtonGroup";
 export * from "./Input";
 export * from "./Textarea";
 export * from "./Select";
@@ -18,6 +19,8 @@ export * from "./Tabs";
 export * from "./Tooltip";
 export * from "./Pagination";
 export * from "./Slider";
+export * from "./ProgressIndicator";
+export * from "./LoadingIndicator";
 export * from "./Alert";
 export * from "./Avatar";
 export * from "./AvatarGroup";
