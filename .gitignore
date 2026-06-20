@@ -26,5 +26,8 @@ dist-ssr
 *storybook.log
 storybook-static
 
-# Local working notes — design decisions log (not tracked yet)
+# Local working notes — design decisions log (not tracked)
 URA-Decisions.md
+
+# Local PR body draft — paste into GitHub or use with: gh pr create --body-file pr-updates.md
+pr-updates.md
