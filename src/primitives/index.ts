@@ -14,6 +14,8 @@ export * from "./Modal";
 export * from "./Tabs";
 export * from "./Tooltip";
 export * from "./Pagination";
+export * from "./ProgressIndicator";
+export * from "./LoadingIndicator";
 export * from "./Alert";
 export * from "./Avatar";
 export * from "./AvatarGroup";

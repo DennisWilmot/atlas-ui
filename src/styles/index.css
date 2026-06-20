@@ -127,6 +127,151 @@ body {
   color: var(--atlas-color-text);
 }
 
+.atlas-progress {
+  display: grid;
+  gap: var(--atlas-space-2);
+}
+
+.atlas-progress__label {
+  color: var(--atlas-color-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.atlas-progress__track {
+  background: var(--atlas-color-surface);
+  border-radius: var(--atlas-radius-full);
+  display: block;
+  height: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.atlas-progress__bar {
+  background: var(--atlas-color-primary);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+  transition: width 200ms ease;
+}
+
+.atlas-progress[data-indeterminate="true"] .atlas-progress__bar {
+  animation: atlas-progress-indeterminate 1.2s ease-in-out infinite;
+  width: 40%;
+}
+
+@keyframes atlas-progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+/* Respect reduced-motion: drop the sliding animation and show a static full
+   bar so the indeterminate state still reads as busy, not as partial progress. */
+@media (prefers-reduced-motion: reduce) {
+  .atlas-progress[data-indeterminate="true"] .atlas-progress__bar {
+    animation: none;
+    width: 100%;
+  }
+}
+
+.atlas-loading {
+  align-items: center;
+  display: inline-flex;
+  gap: var(--atlas-space-2);
+}
+
+.atlas-loading--skeleton {
+  display: flex;
+  width: 100%;
+}
+
+.atlas-loading__spinner {
+  animation: atlas-loading-spin 0.7s linear infinite;
+  border: 2px solid var(--atlas-color-border);
+  border-radius: var(--atlas-radius-full);
+  border-top-color: var(--atlas-color-primary);
+  display: inline-block;
+  flex: none;
+}
+
+.atlas-loading--xs .atlas-loading__spinner {
+  height: 0.75rem;
+  width: 0.75rem;
+}
+
+.atlas-loading--sm .atlas-loading__spinner {
+  height: 1rem;
+  width: 1rem;
+}
+
+.atlas-loading--md .atlas-loading__spinner {
+  height: 1.25rem;
+  width: 1.25rem;
+}
+
+.atlas-loading--lg .atlas-loading__spinner {
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+.atlas-loading__skeleton {
+  animation: atlas-loading-shimmer 1.4s ease infinite;
+  background: linear-gradient(90deg, var(--atlas-color-surface) 25%, #eef2f7 37%, var(--atlas-color-surface) 63%);
+  background-size: 400% 100%;
+  border-radius: var(--atlas-radius-sm);
+  display: block;
+  width: 100%;
+}
+
+.atlas-loading--xs .atlas-loading__skeleton {
+  height: 0.5rem;
+}
+
+.atlas-loading--sm .atlas-loading__skeleton {
+  height: 0.75rem;
+}
+
+.atlas-loading--md .atlas-loading__skeleton {
+  height: 1rem;
+}
+
+.atlas-loading--lg .atlas-loading__skeleton {
+  height: 1.5rem;
+}
+
+.atlas-loading__label {
+  color: var(--atlas-color-text);
+  font-size: 0.875rem;
+}
+
+@keyframes atlas-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes atlas-loading-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-loading__spinner,
+  .atlas-loading__skeleton {
+    animation: none;
+  }
+}
+
 .atlas-field {
   display: grid;
   gap: var(--atlas-space-2);

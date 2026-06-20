@@ -27,8 +27,8 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
 | textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |
-| progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | NOT_STARTED | Squad B | pending | Determinate and indeterminate. |
-| loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | NOT_STARTED | Squad B | pending | Spinner and skeleton variants. |
+| progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | BUILT | Squad B | pending | Determinate and indeterminate; value/min/max; optional label with visually-hidden option; role=progressbar. |
+| loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | BUILT | Squad B | pending | Spinner/skeleton variants; sizes; role=status label with hideLabelVisually; hides when inactive; respects reduced motion. |
 | tags | Tag | REBUILD | `src/primitives/Tag` | yes | BUILT | Squad B | pending | Size + tone; optional icon/avatar slots; removable via onRemove; hides when empty. |
 | sliders | Slider | REBUILD | `src/primitives/Slider` | yes | NOT_STARTED | Squad B | pending | Range with min, max, and step. |
 | featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | BUILT | Squad B | pending | Decorative icon wrapper; size + tone; aria-hidden. Icon injected via prop; hides when no icon. |
