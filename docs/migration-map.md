@@ -20,19 +20,19 @@ Allowed statuses: `NOT_STARTED`, `IN_PROGRESS`, `BUILT`, `EXAMPLE_ONLY_DONE`, `R
 | tooltips | Tooltip | REBUILD | `src/primitives/Tooltip` | yes | BUILT | Squad A | main | Low-level disclosure primitive. |
 | pagination | Pagination | REBUILD | `src/primitives/Pagination` | yes | BUILT | Squad A | main | Hides single-page state by default. |
 | alerts | Alert | REBUILD | `src/primitives/Alert` | yes | BUILT | Squad C | main | Injected actions only. |
-| avatars | Avatar | REBUILD | `src/primitives/Avatar` | yes | NOT_STARTED | Squad B | pending | No legacy asset URLs. |
-| avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | NOT_STARTED | Squad B | pending | Needs overflow behavior. |
-| badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | NOT_STARTED | Squad B | pending | Needs collapse behavior. |
+| avatars | Avatar | REBUILD | `src/primitives/Avatar` | yes | BUILT | Squad B | pending | Image src optional; initials/alt fallback; status indicator. No legacy asset URLs. |
+| avatar-groups | AvatarGroup | REBUILD | `src/primitives/AvatarGroup` | yes | BUILT | Squad B | pending | Composes Avatar; maxVisible default 5 with overflow count; hides when empty. |
+| badge-groups | BadgeGroup | REBUILD | `src/primitives/BadgeGroup` | yes | BUILT | Squad B | pending | Composes Badge; optional maxVisible with +N overflow; hides when no visible badges. |
 | button-groups | ButtonGroup | REBUILD | `src/primitives/ButtonGroup` | yes | NOT_STARTED | Squad B | pending | Segmented or attached buttons. |
 | radios | Radio | REBUILD | `src/primitives/Radio` | yes | NOT_STARTED | Squad B | pending | Base radio primitive. |
 | radio-groups | RadioGroup | REBUILD | `src/primitives/RadioGroup` | yes | NOT_STARTED | Squad B | pending | Option collection primitive. |
 | textareas | Textarea | REBUILD | `src/primitives/Textarea` | yes | NOT_STARTED | Squad B | pending | Hint, error, and character count. |
 | progress-indicators | ProgressIndicator | REBUILD | `src/primitives/ProgressIndicator` | yes | NOT_STARTED | Squad B | pending | Determinate and indeterminate. |
 | loading-indicators | LoadingIndicator | REBUILD | `src/primitives/LoadingIndicator` | yes | NOT_STARTED | Squad B | pending | Spinner and skeleton variants. |
-| tags | Tag | REBUILD | `src/primitives/Tag` | yes | NOT_STARTED | Squad B | pending | Removable and disabled variants. |
+| tags | Tag | REBUILD | `src/primitives/Tag` | yes | BUILT | Squad B | pending | Size + tone; optional icon/avatar slots; removable via onRemove; hides when empty. |
 | sliders | Slider | REBUILD | `src/primitives/Slider` | yes | NOT_STARTED | Squad B | pending | Range with min, max, and step. |
-| featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | NOT_STARTED | Squad B | pending | Decorative only. |
-| dividers | Divider | REBUILD | `src/primitives/Divider` | yes | NOT_STARTED | Squad B | pending | Low-risk separator primitive. |
+| featured-icons | FeaturedIcon | REBUILD | `src/primitives/FeaturedIcon` | yes | BUILT | Squad B | pending | Decorative icon wrapper; size + tone; aria-hidden. Icon injected via prop; hides when no icon. |
+| dividers | Divider | REBUILD | `src/primitives/Divider` | yes | BUILT | Squad B | pending | Horizontal/vertical; optional label + position; spacing; decorative vs semantic separator; hides when hidden. |
 | carousels | Carousel | REBUILD | `src/primitives/Carousel` | yes | BUILT | Squad B | main | Slides supplied by props. |
 | color-pickers | ColorPicker | REBUILD | `src/primitives/ColorPicker` | yes | BUILT | Squad B | main | Color value and optional swatches supplied by props. |
 | rating-badge-and-stars | Rating | REBUILD | `src/primitives/Rating` | yes | BUILT | Squad B | main | Value supplied by props. |
