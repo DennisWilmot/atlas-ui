@@ -49,7 +49,7 @@ function getPredictedPrimarySlot(
 
 function renderSlot(slot: SplitViewportSlot, className: string) {
   return (
-    <div className={className} data-slot-id={slot.id}>
+    <div className={className} data-slot-id={slot.id} key={slot.id}>
       {slot.label ? <div className="atlas-split-viewport__slot-label">{slot.label}</div> : null}
       <div className="atlas-split-viewport__slot-content">{slot.content}</div>
     </div>

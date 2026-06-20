@@ -74,6 +74,16 @@ describe("CollapsibleHealth", () => {
     expect(screen.queryByRole("button", { name: "Open" })).not.toBeInTheDocument();
   });
 
+  it("does not render action surfaces when no visible actions exist", () => {
+    render(
+      <CollapsibleHealth
+        items={[{ id: "item-1", label: "Item 1", status: "degraded", actions: [{ id: "open", label: "Open", hidden: true }] }]}
+      />,
+    );
+
+    expect(screen.queryByLabelText("Item 1 actions")).not.toBeInTheDocument();
+  });
+
   it("calls onAction with the action and item identifiers", async () => {
     const onAction = vi.fn();
     const user = userEvent.setup();

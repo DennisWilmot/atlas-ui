@@ -112,4 +112,36 @@ describe("FileUploader", () => {
 
     expect(screen.queryByRole("button", { name: "Inspect" })).not.toBeInTheDocument();
   });
+
+  it("keeps actions visible but inert while disabled", async () => {
+    const user = userEvent.setup();
+    const onAction = vi.fn();
+    const onFilesSelected = vi.fn();
+    const file = new File(["alpha"], "record.txt", { type: "text/plain" });
+
+    render(
+      <FileUploader
+        disabled
+        files={[
+          {
+            id: "file-1",
+            name: "Record 1.pdf",
+            actions: [{ id: "inspect", label: "Inspect" }],
+          },
+        ]}
+        onAction={onAction}
+        onFilesSelected={onFilesSelected}
+      />,
+    );
+
+    const actionButton = screen.getByRole("button", { name: "Inspect" });
+    expect(actionButton).toBeDisabled();
+    expect(screen.getByLabelText("Files file input")).toBeDisabled();
+
+    await user.click(actionButton);
+    await user.upload(screen.getByLabelText("Files file input"), file);
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(onFilesSelected).not.toHaveBeenCalled();
+  });
 });

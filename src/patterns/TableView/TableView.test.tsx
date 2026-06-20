@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import type { TableColumn } from "../../types";
 import { TableView } from "./TableView";
 
@@ -54,5 +55,26 @@ describe("TableView", () => {
     render(<TableView rows={makeRows(1)} columns={columns} actions={[]} />);
 
     expect(screen.queryByLabelText("Row actions")).not.toBeInTheDocument();
+  });
+
+  it("does not execute disabled row actions", async () => {
+    const user = userEvent.setup();
+    const onAction = vi.fn();
+
+    render(
+      <TableView
+        rows={makeRows(1)}
+        columns={columns}
+        actions={[{ id: "open", label: "Open", disabled: true }]}
+        onAction={onAction}
+      />,
+    );
+
+    const actionButton = screen.getByRole("button", { name: "Open" });
+    expect(actionButton).toBeDisabled();
+
+    await user.click(actionButton);
+
+    expect(onAction).not.toHaveBeenCalled();
   });
 });

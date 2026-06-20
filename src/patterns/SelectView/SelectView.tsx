@@ -32,15 +32,17 @@ export function SelectView({
     const singleItem = items[0];
     if (
       autoSelectSingle &&
+      !disabled &&
       items.length === 1 &&
       singleItem &&
+      !singleItem.disabled &&
       value !== singleItem.id &&
       autoSelectedId.current !== singleItem.id
     ) {
       autoSelectedId.current = singleItem.id;
       onChange?.(singleItem.id);
     }
-  }, [autoSelectSingle, items, onChange, value]);
+  }, [autoSelectSingle, disabled, items, onChange, value]);
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
