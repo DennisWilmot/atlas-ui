@@ -47,6 +47,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "node scripts/verification-runner.mjs build-storybook",
     "build-storybook:raw": "storybook build",
+    "smoke:consumer": "node scripts/run-consumer-smoke.mjs",
     "test": "node scripts/verification-runner.mjs test",
     "test:raw": "vitest run --reporter dot",
     "test:watch": "vitest",
