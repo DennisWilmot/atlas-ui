@@ -278,12 +278,18 @@ export function runGuardrails(repoRoot = process.cwd()) {
   }
 
   const migrationMapPath = join(repoRoot, "docs/migration-map.md");
-  if (existsSync(migrationMapPath)) {
+  if (!existsSync(migrationMapPath)) {
+    addViolation(violations, repoRoot, migrationMapPath, "migration map must exist and account for legacy audit rows");
+  } else {
     const migrationRows = parseMigrationMap(read(migrationMapPath));
-    const publicExportPaths = collectPublicExportPaths(repoRoot);
+    if (migrationRows.length === 0) {
+      addViolation(violations, repoRoot, migrationMapPath, "migration map table is missing or could not be parsed");
+    } else {
+      const publicExportPaths = collectPublicExportPaths(repoRoot);
 
-    for (const violation of getMigrationMapViolations(migrationRows, publicExportPaths)) {
-      addViolation(violations, repoRoot, migrationMapPath, violation.message, violation.lineNumber);
+      for (const violation of getMigrationMapViolations(migrationRows, publicExportPaths)) {
+        addViolation(violations, repoRoot, migrationMapPath, violation.message, violation.lineNumber);
+      }
     }
   }
 

@@ -1,9 +1,14 @@
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import {
   getMigrationMapViolations,
   parseBarrelExportPaths,
   parseMigrationMap,
+  runGuardrails,
 } from "./ura-guardrails.mjs";
 
 function buildMigrationMap(rows) {
@@ -28,6 +33,20 @@ describe("parseBarrelExportPaths", () => {
 });
 
 describe("getMigrationMapViolations", () => {
+  it("fails when the migration map table cannot be parsed", () => {
+    const repoRoot = mkdtempSync(join(tmpdir(), "atlas-ui-guardrails-"));
+    mkdirSync(join(repoRoot, "docs"), { recursive: true });
+    writeFileSync(join(repoRoot, "docs/migration-map.md"), "# Migration Map\n\nNo table here.\n");
+
+    try {
+      expect(runGuardrails(repoRoot)).toEqual([
+        expect.stringContaining("docs/migration-map.md: migration map table is missing or could not be parsed"),
+      ]);
+    } finally {
+      rmSync(repoRoot, { recursive: true, force: true });
+    }
+  });
+
   it("flags incomplete migration rows", () => {
     const rows = parseMigrationMap(
       buildMigrationMap([
