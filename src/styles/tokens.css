@@ -18,9 +18,37 @@
   --atlas-color-border: #d9e2ec;
   --atlas-color-text: #102a43;
   --atlas-color-muted: #627d98;
+  --atlas-color-on-solid: #ffffff;
   --atlas-color-primary: #2563eb;
+  --atlas-color-primary-soft: #dbeafe;
+  --atlas-color-primary-subtle: #f0f9ff;
   --atlas-color-danger: #dc2626;
   --atlas-color-success: #15803d;
   --atlas-color-warning: #b45309;
   --atlas-color-info: #0369a1;
+  --atlas-color-info-subtle: var(--atlas-color-primary-subtle);
+  --atlas-color-success-subtle: #ecfdf3;
+  --atlas-color-warning-subtle: #fffbeb;
+  --atlas-color-danger-subtle: #fef2f2;
+  --atlas-color-info-border-subtle: #bae6fd;
+  --atlas-color-success-border-subtle: #bbf7d0;
+  --atlas-color-warning-border-subtle: #fde68a;
+  --atlas-color-danger-border-subtle: #fecaca;
+  --atlas-color-loading-shimmer: #eef2f7;
+  --atlas-color-backdrop: rgb(16 42 67 / 42%);
+
+  --atlas-opacity-disabled: 0.58;
+  --atlas-opacity-data-viz-fill: 0.82;
+
+  --atlas-focus-outline: 2px solid var(--atlas-color-primary);
+  --atlas-focus-outline-offset: 2px;
+  --atlas-focus-ring-color: rgb(37 99 235 / 35%);
+  --atlas-focus-ring-shadow: 0 0 0 3px var(--atlas-focus-ring-color);
+
+  --atlas-shadow-raised-sm: 0 1px 2px rgb(16 42 67 / 12%);
+  --atlas-shadow-raised-md: 0 4px 12px rgb(16 42 67 / 12%);
+  --atlas-shadow-floating: 0 0.75rem 2rem rgb(16 42 67 / 12%);
+  --atlas-shadow-overlay-soft: 0 1rem 2rem rgb(15 23 42 / 14%);
+  --atlas-shadow-overlay: 0 1rem 3rem rgb(16 42 67 / 18%);
+  --atlas-shadow-overlay-strong: 0 1.5rem 3rem rgb(15 23 42 / 18%);
 }

@@ -17,10 +17,13 @@ npm run check
 ## Public exports
 
 ```ts
+import "atlas-ui/styles.css";
 import { Button } from "atlas-ui/primitives";
 import { MetricView } from "atlas-ui/patterns";
 import type { Action, Metric, Row } from "atlas-ui/types";
 ```
+
+Import the shared stylesheet from `atlas-ui/styles.css`, then import component contracts from the public subpaths.
 
 ## Development rule
 
@@ -29,6 +32,8 @@ Run before opening a PR:
 ```bash
 npm run check
 ```
+
+The consumer-install smoke proof runs as part of `npm run check` and can be invoked directly after a library build with `npm run smoke:consumer`.
 
 ## Architecture
 

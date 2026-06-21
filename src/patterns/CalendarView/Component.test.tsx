@@ -72,6 +72,27 @@ describe("CalendarView", () => {
     expect(screen.queryByRole("button", { name: "Open" })).not.toBeInTheDocument();
   });
 
+  it("keeps disabled event actions visible but non-interactive", async () => {
+    const user = userEvent.setup();
+    const onAction = vi.fn();
+
+    render(
+      <CalendarView
+        actions={[{ id: "open", label: "Open" }]}
+        events={[{ ...makeEvents(1)[0], disabled: true }]}
+        mode="agenda"
+        onAction={onAction}
+      />,
+    );
+
+    const actionButton = screen.getByRole("button", { name: "Open" });
+    expect(actionButton).toBeDisabled();
+
+    await user.click(actionButton);
+
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
   it("calls event selection with the selected event", async () => {
     const user = userEvent.setup();
     const onEventSelect = vi.fn();

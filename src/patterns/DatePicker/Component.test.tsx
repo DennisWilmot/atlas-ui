@@ -58,4 +58,21 @@ describe("DatePicker", () => {
     await user.click(trigger);
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+
+  it("moves focus into the dialog and closes on escape", async () => {
+    const user = userEvent.setup();
+
+    render(<DatePicker label="Date" />);
+
+    const trigger = screen.getByRole("button", { name: /Date/ });
+    await user.click(trigger);
+
+    const input = screen.getByLabelText("Date", { selector: "input" });
+    expect(input).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
 });

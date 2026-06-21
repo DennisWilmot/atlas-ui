@@ -32,7 +32,11 @@ describe("ToastNotification", () => {
   it("renders a status notification by default", () => {
     render(<ToastNotification toast={toast} />);
 
-    expect(screen.getByRole("status", { name: "Notification" })).toBeInTheDocument();
+    const status = screen.getByRole("status", { name: "Notification" });
+
+    expect(status).toBeInTheDocument();
+    expect(status).toHaveAttribute("aria-live", "polite");
+    expect(status).toHaveAttribute("aria-atomic", "true");
     expect(screen.getByText("Item A")).toBeInTheDocument();
     expect(screen.getByText("Item A changed.")).toBeInTheDocument();
   });
@@ -40,7 +44,7 @@ describe("ToastNotification", () => {
   it("uses alert semantics for attention tones", () => {
     render(<ToastNotification toast={{ ...toast, tone: "danger" }} />);
 
-    expect(screen.getByRole("alert", { name: "Notification" })).toBeInTheDocument();
+    expect(screen.getByRole("alert", { name: "Notification" })).toHaveAttribute("aria-live", "assertive");
   });
 
   it("renders visible injected actions and emits selected action", async () => {

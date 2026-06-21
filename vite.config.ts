@@ -23,13 +23,14 @@ export default defineConfig({
         return { filePath, content };
       },
       entryRoot: srcRoot,
-      exclude: ["src/**/*.stories.tsx", "src/**/*.test.tsx"],
+      exclude: ["src/**/*.stories.ts", "src/**/*.stories.tsx", "src/**/*.test.ts", "src/**/*.test.tsx"],
       include: ["src"],
       outDirs: distRoot,
       tsconfigPath: "./tsconfig.app.json",
     }),
   ],
   build: {
+    copyPublicDir: false,
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),

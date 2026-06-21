@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { SplitViewport } from "./SplitViewport";
 
 const slots = [
@@ -43,6 +43,20 @@ describe("SplitViewport", () => {
     expect(container.querySelector(".atlas-split-viewport__primary")).toHaveTextContent("Beta content");
     expect(container.querySelector(".atlas-split-viewport__secondary")).toHaveTextContent("Alpha content");
     expect(container.querySelector(".atlas-split-viewport__secondary")).toHaveTextContent("Gamma content");
+  });
+
+  it("does not emit React key warnings for secondary slots", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    try {
+      render(<SplitViewport slots={slots} />);
+
+      expect(errorSpy.mock.calls.flat().join("\n")).not.toContain(
+        'Each child in a list should have a unique "key" prop.',
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 
   it("honors a visible requested primary slot", () => {

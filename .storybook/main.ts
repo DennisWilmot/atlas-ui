@@ -1,5 +1,9 @@
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 import type { PluginOption, UserConfig } from 'vite';
+
+const storybookDir = dirname(fileURLToPath(import.meta.url));
 
 function withoutDeclarationPlugin(plugins: PluginOption[] = []): PluginOption[] {
   return plugins.flatMap((plugin) => {
@@ -39,6 +43,16 @@ const config: StorybookConfig = {
   "framework": "@storybook/react-vite",
   viteFinal: (config) => ({
     ...config,
+    resolve: {
+      ...config.resolve,
+      alias: {
+        ...config.resolve?.alias,
+        'atlas-ui/primitives': resolve(storybookDir, '../src/primitives.ts'),
+        'atlas-ui/patterns': resolve(storybookDir, '../src/patterns.ts'),
+        'atlas-ui/types': resolve(storybookDir, '../src/types.ts'),
+        'atlas-ui/headless': resolve(storybookDir, '../src/headless.ts'),
+      },
+    },
     build: withoutLibraryBuildSettings(config.build),
     plugins: withoutDeclarationPlugin(config.plugins),
   }),

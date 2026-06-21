@@ -190,6 +190,19 @@ function getEventActions(actions: CalendarViewProps["actions"], event: CalendarE
   return typeof actions === "function" ? actions(event) : actions;
 }
 
+function getInteractiveEventActions(
+  actions: CalendarViewProps["actions"],
+  event: CalendarEvent,
+  readOnly: boolean,
+): Action[] {
+  if (readOnly) return [];
+
+  const visibleActions = getVisibleActions(getEventActions(actions, event));
+  if (!event.disabled) return visibleActions;
+
+  return visibleActions.map((action) => ({ ...action, disabled: true }));
+}
+
 export function CalendarView({
   actions,
   className,
@@ -249,7 +262,7 @@ export function CalendarView({
   const gridMode = mode === "month" || mode === "week";
 
   const renderEvent = (normalizedEvent: NormalizedEvent) => {
-    const eventActions = !readOnly ? getVisibleActions(getEventActions(actions, normalizedEvent.event)) : [];
+    const eventActions = getInteractiveEventActions(actions, normalizedEvent.event, readOnly);
     const hasActions = hasVisibleActions(eventActions);
     const eventContent = (
       <>

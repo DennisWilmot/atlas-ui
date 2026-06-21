@@ -32,4 +32,44 @@ describe("Tabs", () => {
 
     expect(container.firstChild).toBeNull();
   });
+
+  it("moves focus and selection with arrow keys, skipping disabled tabs", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Tabs
+        items={[
+          { id: "item-a", label: "Item A", content: <p>Panel A</p> },
+          { id: "item-b", label: "Item B", content: <p>Panel B</p>, disabled: true },
+          { id: "item-c", label: "Item C", content: <p>Panel C</p> },
+        ]}
+      />,
+    );
+
+    const firstTab = screen.getByRole("tab", { name: "Item A" });
+    const thirdTab = screen.getByRole("tab", { name: "Item C" });
+
+    firstTab.focus();
+    await user.keyboard("{ArrowRight}");
+
+    expect(thirdTab).toHaveFocus();
+    expect(thirdTab).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByText("Panel C")).toBeVisible();
+  });
+
+  it("jumps to the first and last tabs with Home and End", async () => {
+    const user = userEvent.setup();
+
+    render(<Tabs items={items} />);
+
+    const firstTab = screen.getByRole("tab", { name: "Item A" });
+    const secondTab = screen.getByRole("tab", { name: "Item B" });
+
+    firstTab.focus();
+    await user.keyboard("{End}");
+    expect(secondTab).toHaveFocus();
+
+    await user.keyboard("{Home}");
+    expect(firstTab).toHaveFocus();
+  });
 });

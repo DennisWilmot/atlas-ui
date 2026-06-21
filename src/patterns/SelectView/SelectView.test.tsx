@@ -36,4 +36,20 @@ describe("SelectView", () => {
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith("item-1");
   });
+
+  it("does not auto-select a single item while disabled", () => {
+    const onChange = vi.fn();
+
+    render(<SelectView disabled items={makeItems(1)} onChange={onChange} />);
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("does not auto-select a disabled single item", () => {
+    const onChange = vi.fn();
+
+    render(<SelectView items={[{ id: "item-1", label: "Item 1", disabled: true }]} onChange={onChange} />);
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });

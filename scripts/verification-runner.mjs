@@ -27,6 +27,7 @@ const stageCommands = {
   guardrails: [npmScript("guardrails:raw")],
   test: [npmScript("test:raw")],
   build: [npmScript("build:raw")],
+  "smoke:consumer": [npmScript("smoke:consumer")],
   "build-storybook": [npmScript("build-storybook:raw")],
 };
 
@@ -34,6 +35,7 @@ stageCommands.check = [
   ...stageCommands.guardrails,
   ...stageCommands.test,
   ...stageCommands.build,
+  ...stageCommands["smoke:consumer"],
   ...stageCommands["build-storybook"],
 ];
 

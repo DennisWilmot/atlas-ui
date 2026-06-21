@@ -1,0 +1,20 @@
+.smoke-shell {
+  background: var(--atlas-color-surface-muted);
+  min-height: 100vh;
+  padding: var(--atlas-space-6);
+}
+
+.smoke-panel {
+  background: var(--atlas-color-surface);
+  border: 1px solid var(--atlas-color-border);
+  border-radius: var(--atlas-radius-md);
+  box-shadow: var(--atlas-shadow-raised-sm);
+  margin: 0 auto;
+  max-width: 56rem;
+  padding: var(--atlas-space-5);
+}
+
+.smoke-note {
+  color: var(--atlas-color-muted);
+  font-size: 0.875rem;
+}

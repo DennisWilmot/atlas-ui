@@ -17,8 +17,11 @@ export function Input({
 }: InputProps) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
-  const hintId = hint ? `${inputId}-hint` : undefined;
-  const errorId = error ? `${inputId}-error` : undefined;
+  const hasHint = typeof hint === "string" && hint.trim().length > 0;
+  const hasError = typeof error === "string" && error.trim().length > 0;
+  const showHint = hasHint && !hasError;
+  const hintId = showHint ? `${inputId}-hint` : undefined;
+  const errorId = hasError ? `${inputId}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
   return (
@@ -30,15 +33,15 @@ export function Input({
         className="atlas-field__control"
         id={inputId}
         aria-describedby={describedBy}
-        aria-invalid={Boolean(error)}
+        aria-invalid={hasError || undefined}
         {...props}
       />
-      {hint ? (
+      {showHint ? (
         <span className="atlas-field__hint" id={hintId}>
           {hint}
         </span>
       ) : null}
-      {error ? (
+      {hasError ? (
         <span className="atlas-field__error" id={errorId}>
           {error}
         </span>

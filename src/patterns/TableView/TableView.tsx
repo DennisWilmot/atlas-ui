@@ -116,6 +116,7 @@ export function TableView<T extends Row = Row>({
       ) : null}
       <div className="atlas-table-view__scroll">
         <table className="atlas-table">
+          <caption className="atlas-visually-hidden">{label}</caption>
           <thead>
             <tr>
               {columns.map((column) => (

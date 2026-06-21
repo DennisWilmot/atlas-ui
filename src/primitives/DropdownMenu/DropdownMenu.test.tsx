@@ -42,4 +42,54 @@ describe("DropdownMenu", () => {
 
     expect(container.firstChild).toBeNull();
   });
+
+  it("supports keyboard navigation and skips disabled items", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu
+        items={[
+          { id: "item-a", label: "Item A" },
+          { id: "item-b", label: "Item B", disabled: true },
+          { id: "item-c", label: "Item C" },
+        ]}
+      />,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    trigger.focus();
+
+    await user.keyboard("{ArrowDown}");
+
+    const alpha = screen.getByRole("menuitem", { name: "Item A" });
+    const gamma = screen.getByRole("menuitem", { name: "Item C" });
+
+    expect(alpha).toHaveFocus();
+
+    await user.keyboard("{ArrowDown}");
+    expect(gamma).toHaveFocus();
+
+    await user.keyboard("{Home}");
+    expect(alpha).toHaveFocus();
+
+    await user.keyboard("{End}");
+    expect(gamma).toHaveFocus();
+  });
+
+  it("closes on escape and restores focus to the trigger", async () => {
+    const user = userEvent.setup();
+
+    render(<DropdownMenu items={[{ id: "item-a", label: "Item A" }]} />);
+
+    const trigger = screen.getByRole("button", { name: "Menu" });
+    trigger.focus();
+
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("menuitem", { name: "Item A" })).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+
+    expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
 });
