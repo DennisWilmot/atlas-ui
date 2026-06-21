@@ -20,4 +20,11 @@ describe("Input", () => {
 
     expect(screen.getByLabelText("Field label")).toHaveAttribute("aria-invalid", "true");
   });
+
+  it("replaces hint text with the error description", () => {
+    render(<Input label="Field label" hint="Helpful context." error="Enter a valid value." />);
+
+    expect(screen.queryByText("Helpful context.")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Field label")).toHaveAccessibleDescription("Enter a valid value.");
+  });
 });

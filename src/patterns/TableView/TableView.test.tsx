@@ -35,6 +35,12 @@ describe("TableView", () => {
     expect(screen.getByLabelText("Table search")).toBeInTheDocument();
   });
 
+  it("gives the table an accessible name", () => {
+    render(<TableView rows={makeRows(1)} columns={columns} label="Records table" />);
+
+    expect(screen.getByRole("table", { name: "Records table" })).toBeInTheDocument();
+  });
+
   it("does not display hidden row actions", () => {
     render(
       <TableView

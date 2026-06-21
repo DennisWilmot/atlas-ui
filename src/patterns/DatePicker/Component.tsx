@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { OverlayMode } from "../../types";
 
 export type DatePickerValue = Date | string | null | undefined;
@@ -98,6 +98,8 @@ export function DatePicker({
   value,
 }: DatePickerProps) {
   const generatedId = useId();
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [internalValue, setInternalValue] = useState(toDateInputValue(defaultValue));
 
@@ -119,13 +121,24 @@ export function DatePicker({
     onOpenChange?.(nextOpen);
   };
 
+  const closeOverlay = () => {
+    setOpen(false);
+    queueMicrotask(() => triggerRef.current?.focus());
+  };
+
   const setValue = (nextValue: string) => {
     if (value === undefined) setInternalValue(nextValue);
     onChange?.(nextValue);
-    setOpen(false);
+    closeOverlay();
   };
 
   const displayValue = formatDateLabel(selectedValue);
+
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current?.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div className={joinClasses("atlas-date-picker", className)}>
@@ -140,7 +153,15 @@ export function DatePicker({
           aria-labelledby={`${labelId} ${valueId}`}
           className="atlas-date-picker__trigger"
           disabled={controlsDisabled}
-          onClick={() => setOpen(!isOpen)}
+          onClick={() => {
+            if (isOpen) {
+              closeOverlay();
+              return;
+            }
+
+            setOpen(true);
+          }}
+          ref={triggerRef}
           type="button"
         >
           <span className={displayValue ? undefined : "atlas-date-picker__placeholder"} id={valueId}>
@@ -154,6 +175,12 @@ export function DatePicker({
           aria-modal={mode === "modal" ? true : undefined}
           className={joinClasses("atlas-date-picker__overlay", `atlas-date-picker__overlay--${mode}`)}
           id={overlayId}
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              event.preventDefault();
+              closeOverlay();
+            }
+          }}
           role="dialog"
         >
           <label className="atlas-field" htmlFor={inputId}>
@@ -166,6 +193,7 @@ export function DatePicker({
               min={minValue || undefined}
               name={name}
               onChange={(event) => setValue(event.target.value)}
+              ref={inputRef}
               readOnly={readOnly}
               required={required}
               type="date"

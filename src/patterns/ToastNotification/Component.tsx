@@ -50,7 +50,9 @@ export function ToastNotification({
 
   return (
     <section
+      aria-atomic="true"
       aria-label={ariaLabel}
+      aria-live={resolvedRole === "alert" ? "assertive" : "polite"}
       className={joinClasses("atlas-toast-notification", `atlas-toast-notification--${tone}`, className)}
       role={resolvedRole}
     >

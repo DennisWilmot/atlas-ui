@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import type { KeyboardEvent, ReactNode } from "react";
 
 export type TabItem = {
@@ -34,6 +34,8 @@ export function Tabs({
   onSelectionChange,
   selectedKey,
 }: TabsProps) {
+  const generatedId = useId();
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const visibleItems = useMemo(() => items.filter((item) => !item.hidden), [items]);
   const firstSelectable = getFirstSelectable(visibleItems);
   const isControlled = selectedKey !== undefined;
@@ -48,59 +50,75 @@ export function Tabs({
   const selectedItem = requestedItem && !requestedItem.disabled ? requestedItem : firstSelectable;
   const activeKey = selectedItem?.id ?? visibleItems[0]?.id;
 
-  function selectItem(item: TabItem | undefined) {
+  function getTabId(itemId: string) {
+    return `${generatedId}-${itemId}-tab`;
+  }
+
+  function getPanelId(itemId: string) {
+    return `${generatedId}-${itemId}-panel`;
+  }
+
+  function selectItem(item: TabItem | undefined, options?: { focus?: boolean }) {
     if (!item || item.disabled) return;
 
     if (!isControlled) {
       setInternalSelectedKey(item.id);
     }
 
+    if (options?.focus) {
+      tabRefs.current[item.id]?.focus();
+    }
+
     onSelectionChange?.(item.id);
   }
 
-  function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+  function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>, currentItem: TabItem) {
     const enabledItems = visibleItems.filter((item) => !item.disabled);
     if (enabledItems.length === 0) return;
 
-    const currentIndex = enabledItems.findIndex((item) => item.id === activeKey);
+    const currentIndex = enabledItems.findIndex((item) => item.id === currentItem.id);
     const safeIndex = currentIndex >= 0 ? currentIndex : 0;
 
     if (event.key === "ArrowRight") {
       event.preventDefault();
-      selectItem(enabledItems[(safeIndex + 1) % enabledItems.length]);
+      selectItem(enabledItems[(safeIndex + 1) % enabledItems.length], { focus: true });
     }
 
     if (event.key === "ArrowLeft") {
       event.preventDefault();
-      selectItem(enabledItems[(safeIndex - 1 + enabledItems.length) % enabledItems.length]);
+      selectItem(enabledItems[(safeIndex - 1 + enabledItems.length) % enabledItems.length], { focus: true });
     }
 
     if (event.key === "Home") {
       event.preventDefault();
-      selectItem(enabledItems[0]);
+      selectItem(enabledItems[0], { focus: true });
     }
 
     if (event.key === "End") {
       event.preventDefault();
-      selectItem(enabledItems[enabledItems.length - 1]);
+      selectItem(enabledItems[enabledItems.length - 1], { focus: true });
     }
   }
 
   return (
     <div className={joinClasses("atlas-tabs", className)}>
-      <div aria-label={label} className="atlas-tabs__list" onKeyDown={handleKeyDown} role="tablist">
+      <div aria-label={label} className="atlas-tabs__list" role="tablist">
         {visibleItems.map((item) => {
           const selected = item.id === activeKey;
 
           return (
             <button
-              aria-controls={`${item.id}-panel`}
+              aria-controls={getPanelId(item.id)}
               aria-selected={selected}
               className={joinClasses("atlas-tabs__tab", selected && "atlas-tabs__tab--selected")}
               disabled={item.disabled}
-              id={`${item.id}-tab`}
+              id={getTabId(item.id)}
               key={item.id}
               onClick={() => selectItem(item)}
+              onKeyDown={(event) => handleKeyDown(event, item)}
+              ref={(element) => {
+                tabRefs.current[item.id] = element;
+              }}
               role="tab"
               tabIndex={selected ? 0 : -1}
               type="button"
@@ -112,9 +130,9 @@ export function Tabs({
       </div>
       {visibleItems.map((item) => (
         <div
-          aria-labelledby={`${item.id}-tab`}
+          aria-labelledby={getTabId(item.id)}
           hidden={item.id !== activeKey}
-          id={`${item.id}-panel`}
+          id={getPanelId(item.id)}
           key={item.id}
           role="tabpanel"
         >

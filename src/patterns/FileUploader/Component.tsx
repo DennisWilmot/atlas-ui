@@ -97,6 +97,7 @@ export function FileUploader({
   showEmptyState = false,
 }: FileUploaderProps) {
   const inputId = useId();
+  const hintId = hint ? `${inputId}-hint` : undefined;
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(0);
   const visibleFiles = useMemo(() => getVisibleFiles(files), [files]);
@@ -161,12 +162,13 @@ export function FileUploader({
           onDrop={handleDrop}
         >
           <span className="atlas-file-uploader__prompt">{prompt}</span>
-          {hint ? <span className="atlas-field__hint">{hint}</span> : null}
+          {hint ? <span className="atlas-field__hint" id={hintId}>{hint}</span> : null}
           <span className="atlas-action-menu__item" aria-hidden="true">
             {browseLabel}
           </span>
           <input
             accept={accept}
+            aria-describedby={hintId}
             aria-label={`${label} file input`}
             className="atlas-file-uploader__input"
             disabled={disabled}

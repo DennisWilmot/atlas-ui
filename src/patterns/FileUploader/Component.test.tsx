@@ -43,6 +43,12 @@ describe("FileUploader", () => {
     expect(screen.getByLabelText("Files search")).toBeInTheDocument();
   });
 
+  it("associates hint text with the file input", () => {
+    render(<FileUploader files={[]} hint="PDF or text files" onFilesSelected={() => undefined} />);
+
+    expect(screen.getByLabelText("Files file input")).toHaveAccessibleDescription("PDF or text files");
+  });
+
   it("hides files without meaningful names", () => {
     render(
       <FileUploader
